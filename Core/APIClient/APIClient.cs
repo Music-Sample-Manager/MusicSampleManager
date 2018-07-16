@@ -1,4 +1,6 @@
 ﻿using Domain;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace APIClient
 {
@@ -6,8 +8,15 @@ namespace APIClient
     {
         public Package FindPackageByName(string targetPackage)
         {
-            return new Package();
-            throw new System.NotImplementedException();
+            var client = new HttpClient();
+
+            var result = client.GetAsync("https://localhost:44349/api/packages?packageName=Test").Result;
+
+
+            var package = result.Content.ReadAsStringAsync().Result;
+            return string.IsNullOrEmpty(package) ?
+                       default(Package) :
+                       JsonConvert.DeserializeObject<Package>(package);
         }
     }
 }
