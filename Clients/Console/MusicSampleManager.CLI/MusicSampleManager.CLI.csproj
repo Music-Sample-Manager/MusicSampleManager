@@ -13,4 +13,8 @@
     <ProjectReference Include="..\..\Clients.Common\Clients.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
 </Project>

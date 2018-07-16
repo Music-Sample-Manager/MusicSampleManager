@@ -11,6 +11,9 @@ namespace MusicSampleManager.CLI
 
         static void Main(string[] args)
         {
+            // TODO UNDO THIS LATER:
+            args = new[] { "Install", "VirtualPlayingOrchestra" };
+
             ConfigureDI();
 
             _logger.LogInformation("msm {Command}", string.Join(" ", args));

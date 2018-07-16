@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MusicSampleManager.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "Install VirtualPlayingOrchestra"
+    }
+  }
+}
