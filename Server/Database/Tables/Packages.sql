@@ -1,0 +1,5 @@
+﻿CREATE TABLE [dbo].[Packages]
+(
+	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
+    [Identifier] NVARCHAR(128) NOT NULL
+)
