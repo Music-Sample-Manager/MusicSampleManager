@@ -1,16 +1,18 @@
 ﻿using Domain;
+using Microsoft.EntityFrameworkCore;
+using PackageDatabase;
 using System;
 using System.Collections.Generic;
+using System.IO.Compression;
 using System.Linq;
 
-namespace PackageDatabase
+namespace Core.DataLayer
 {
-    public class DbPackageRepository : IPackageRepository
+    public class DbPackageRepository : DbContext, IPackageRepository
     {
-        public List<Package> GetAll()
-        {
-            throw new NotImplementedException();
-        }
+        public DbSet<PackageRec> Packages { get; set; }
+
+        public IEnumerable<Package> GetAll() => Packages.Select(p => p.ToPackage);
 
         public Package FindByName(string packageName)
         {
@@ -31,5 +33,14 @@ namespace PackageDatabase
                 throw new Exception($"No packages found with name {packageName}");
             }
         }
+
+        public ZipArchive DownloadLatestByName(string packageName)
+        {
+            var package = FindByName(packageName);
+
+            return package.LatestVersion().Contents;
+        }
+
+        public DbPackageRepository(DbContextOptions<DbPackageRepository> options) : base(options) { }
     }
 }

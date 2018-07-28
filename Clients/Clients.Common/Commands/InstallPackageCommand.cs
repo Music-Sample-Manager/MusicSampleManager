@@ -13,18 +13,19 @@ namespace Clients.Common.Commands
             _apiClient = apiClient;
         }
 
-        public void Execute(string targetPackage)
+        public void Execute(string targetPackageName)
         {
-            _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackage);
+            _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
 
-            VerifyPackageIsValid(targetPackage);
+            VerifyPackageIsValid(targetPackageName);
+            _apiClient.DownloadPackage(targetPackageName);
         }
 
-        private void VerifyPackageIsValid(string targetPackage)
+        private void VerifyPackageIsValid(string targetPackageName)
         {
             _logger.LogInformation("Verifying that the target package exists...");
 
-            var result = _apiClient.FindPackageByName(targetPackage);
+            var result = _apiClient.FindPackageByName(targetPackageName);
         }
     }
 }
