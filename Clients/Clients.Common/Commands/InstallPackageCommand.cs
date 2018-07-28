@@ -18,7 +18,7 @@ namespace Clients.Common.Commands
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
 
             VerifyPackageIsValid(targetPackageName);
-            _apiClient.DownloadPackage(targetPackageName);
+            _apiClient.DownloadPackage(targetPackageName, string.Empty);
         }
 
         private void VerifyPackageIsValid(string targetPackageName)
