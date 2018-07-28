@@ -1,6 +1,7 @@
 using Domain;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace PackageDatabase.Tests
@@ -26,7 +27,7 @@ namespace PackageDatabase.Tests
 
             Assert.NotNull(resultPackages);
             Assert.NotEmpty(resultPackages);
-            Assert.Equal(3, resultPackages.Count);
+            Assert.Equal(3, resultPackages.Count());
 
             _repository.VerifyAll();
         }
