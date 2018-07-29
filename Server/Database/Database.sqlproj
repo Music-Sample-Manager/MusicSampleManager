@@ -67,6 +67,8 @@
     <Build Include="Tables\Users.sql" />
     <Build Include="Tables\Roles.sql" />
     <Build Include="Tables\PackageRevisions.sql" />
+    <Build Include="Tables\Tags.sql" />
+    <Build Include="Tables\Packages_Tags.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Database.publish.xml" />

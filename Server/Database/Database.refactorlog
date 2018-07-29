@@ -7,4 +7,11 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="[FK_PackageRevisions_ToPackage]" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="718586f6-1140-49e9-9055-288684ff921e" ChangeDateTime="07/29/2018 22:11:03">
+    <Property Name="ElementName" Value="[dbo].[Packages_Tags].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Packages_Tags]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PackageId" />
+  </Operation>
 </Operations>

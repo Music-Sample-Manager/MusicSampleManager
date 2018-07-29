@@ -4,19 +4,29 @@
 USE msmdb
 GO
 
+DECLARE @MixGeniusAuthor VARCHAR(MAX) = 'MixGenius',
+		@AbletonAuthor VARCHAR(MAX) = 'Ableton',
+		@PaulBattersbyAuthor VARCHAR(MAX) = 'PaulBattersby'
+
+INSERT Users (UserName)
+VALUES (@MixGeniusAuthor),
+	   (@AbletonAuthor),
+	   (@PaulBattersbyAuthor)
+
+
 DECLARE @Landr VARCHAR(MAX) = 'LANDR.SamplePacks',
 		@LiveSchool VARCHAR(MAX) = 'LiveSchool.FreeSamples',
 		@Ableton VARCHAR(MAX) = 'Ableton.FreePacks',
 		@VPO VARCHAR(MAX) = 'VirtualPlayingOrchestra'
 
-INSERT Packages (Identifier)
-VALUES ('LegoWelt.FreeSamples'),
-	   (@Landr),
-	   ('GroundYourSound'),
-	   (@LiveSchool),
-	   (@Ableton),
-	   ('BoxedEar.FreeKitPacks'),
-	   (@VPO)
+INSERT Packages (Identifier, [Description], AuthorId)
+VALUES ('LegoWelt.FreeSamples', 'A collection of free samples', (SELECT Id FROM Users WHERE UserName = @MixGeniusAuthor)),
+	   (@Landr, 'LANDR''s free sample pack', (SELECT Id FROM Users WHERE UserName = @MixGeniusAuthor)),
+	   ('GroundYourSound', 'Some samples', (SELECT Id FROM Users WHERE UserName = @MixGeniusAuthor)),
+	   (@LiveSchool, 'LiveSchool''s free sample packs', (SELECT Id FROM Users WHERE UserName = @MixGeniusAuthor)),
+	   (@Ableton, 'The free samples that come with Ableton Live', (SELECT Id FROM Users WHERE UserName = @AbletonAuthor)),
+	   ('BoxedEar.FreeKitPacks', 'BoxedEars'' free samples', (SELECT Id FROM Users WHERE UserName = @MixGeniusAuthor)),
+	   (@VPO, 'A free, virtual orchestra.', (SELECT Id FROM Users WHERE UserName = @PaulBattersbyAuthor))
 
 
 INSERT PackageRevisions (PackageId, VersionNumber)
