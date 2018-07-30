@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Domain;
+using Microsoft.Extensions.Logging;
+using System.IO;
+using System.IO.Abstractions;
 
 namespace Clients.Common.Commands
 {
@@ -15,9 +18,23 @@ namespace Clients.Common.Commands
 
         public void Execute(string targetPackageName)
         {
-            _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-
             VerifyPackageIsValid(targetPackageName);
+
+            _logger.LogInformation("Checking if `packages` folder exists....");
+            var localPackageStore = new LocalPackageStore(new FileSystem(), Directory.GetCurrentDirectory());
+            var packagesFolderExists = localPackageStore.PackagesFolderExists();
+
+            if (packagesFolderExists)
+            {
+                _logger.LogInformation("Packages folder found. Using existing folder.");
+            }
+            else
+            {
+                _logger.LogInformation("Packages folder not found. Creating new packages folder.");
+                localPackageStore.CreatePackagesFolder();
+            }
+
+            _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
             _apiClient.DownloadPackage(targetPackageName, string.Empty);
         }
 

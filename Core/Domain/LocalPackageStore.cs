@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using System.Linq;
 
 namespace Domain
@@ -8,7 +9,7 @@ namespace Domain
     /// </summary>
     public class LocalPackageStore
     {
-        private const string packagesFolderName = "samplePackages";
+        public const string PackagesFolderName = "samplePackages";
 
         private readonly IFileSystem _fileSystem;
         private readonly DirectoryInfoBase _projectRootDirectory;
@@ -22,9 +23,21 @@ namespace Domain
         public bool PackagesFolderExists()
         {
             var allSubFolders = _projectRootDirectory.EnumerateDirectories().ToList();
-            var packagesFolder = allSubFolders.SingleOrDefault(sf => sf.Name == packagesFolderName);
+            var packagesFolder = allSubFolders.SingleOrDefault(sf => sf.Name == PackagesFolderName);
 
             return packagesFolder != null;
+        }
+
+        public void CreatePackagesFolder()
+        {
+            if (PackagesFolderExists())
+            {
+                throw new InvalidOperationException("Can't create packages folder when it already exists.");
+            }
+            else
+            {
+                _projectRootDirectory.CreateSubdirectory(PackagesFolderName);
+            }
         }
     }
 }
