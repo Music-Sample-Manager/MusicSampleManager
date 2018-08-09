@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using System.IO.Abstractions;
 
 namespace Clients.Common.Commands
@@ -21,8 +20,9 @@ namespace Clients.Common.Commands
             VerifyPackageIsValid(targetPackageName);
 
             _logger.LogInformation("Checking if `packages` folder exists....");
-            var localPackageStore = new LocalPackageStore(new FileSystem(), Directory.GetCurrentDirectory());
-            var packagesFolderExists = localPackageStore.PackagesFolderExists();
+            var fileSystem = new FileSystem();
+            var localPackageStore = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, fileSystem.Directory.GetCurrentDirectory()));
+            var packagesFolderExists = localPackageStore.RootFolderExists();
 
             if (packagesFolderExists)
             {
@@ -31,11 +31,13 @@ namespace Clients.Common.Commands
             else
             {
                 _logger.LogInformation("Packages folder not found. Creating new packages folder.");
-                localPackageStore.CreatePackagesFolder();
+                localPackageStore.CreateRootFolder();
             }
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            _apiClient.DownloadPackage(targetPackageName, string.Empty);
+            var package = _apiClient.DownloadPackage(targetPackageName, string.Empty);
+
+            localPackageStore.AddPackage(package);
         }
 
         private void VerifyPackageIsValid(string targetPackageName)
