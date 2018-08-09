@@ -20,7 +20,7 @@ namespace APIClient
                        JsonConvert.DeserializeObject<Package>(package);
         }
 
-        public ZipArchive DownloadPackage(string packageName, string packageVersion)
+        public PackageRevision DownloadPackage(string packageName, string packageVersion)
         {
             var client = new HttpClient();
 
@@ -28,9 +28,12 @@ namespace APIClient
 
 
             var package = result.Content.ReadAsStringAsync().Result;
-            return string.IsNullOrEmpty(package) ?
-                       default(ZipArchive) :
-                       JsonConvert.DeserializeObject<ZipArchive>(package);
+
+            return new PackageRevision(new Package(packageName),
+                                       packageVersion,
+                                       string.IsNullOrEmpty(package) ?
+                                                    default(ZipArchive) :
+                                                    JsonConvert.DeserializeObject<ZipArchive>(package));
         }
     }
 }
