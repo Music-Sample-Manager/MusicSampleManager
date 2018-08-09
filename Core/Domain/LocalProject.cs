@@ -6,10 +6,12 @@ namespace Domain
     public class LocalProject
     {
         private readonly IFileSystem FileSystem;
-        public readonly string RootFolder;
+        public readonly DirectoryInfoBase RootFolder;
 
         public LocalProject(IFileSystem fileSystem, string rootFolder)
         {
+            FileSystem = fileSystem;
+
             if (fileSystem == null)
             {
                 throw new ArgumentNullException(nameof(fileSystem));
@@ -20,12 +22,12 @@ namespace Domain
                 throw new ArgumentNullException(nameof(rootFolder));
             }
 
-            if (fileSystem.DirectoryInfo.FromDirectoryName(rootFolder) == null)
+            if (!FileSystem.Directory.Exists(rootFolder))
             {
-                throw new Exception($"{rootFolder} does not exist. Invalid project root folder.");
+                throw new ArgumentException($"{rootFolder} does not exist. Invalid project root folder.");
             }
 
-            RootFolder = rootFolder;
+            RootFolder = FileSystem.DirectoryInfo.FromDirectoryName(rootFolder);
         }
     }
 }
