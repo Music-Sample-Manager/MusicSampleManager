@@ -9,35 +9,78 @@ namespace Domain
     /// </summary>
     public class LocalPackageStore
     {
-        public const string PackagesFolderName = "samplePackages";
+        public const string RootFolderName = "samplePackages";
 
         private readonly IFileSystem _fileSystem;
-        private readonly DirectoryInfoBase _projectRootDirectory;
+        private readonly LocalProject PackageProject;
 
-        public LocalPackageStore(IFileSystem fileSystem, string projectRootDirectory)
+        public LocalPackageStore(IFileSystem fileSystem, LocalProject packageStoreProject)
         {
             _fileSystem = fileSystem;
-            _projectRootDirectory = _fileSystem.DirectoryInfo.FromDirectoryName(projectRootDirectory);
+            PackageProject = packageStoreProject ?? throw new ArgumentNullException(nameof(packageStoreProject));
         }
 
-        public bool PackagesFolderExists()
+        public bool RootFolderExists()
         {
-            var allSubFolders = _projectRootDirectory.EnumerateDirectories().ToList();
-            var packagesFolder = allSubFolders.SingleOrDefault(sf => sf.Name == PackagesFolderName);
+            var allSubFolders = PackageProject.RootFolder.EnumerateDirectories().ToList();
+            var packagesFolder = allSubFolders.SingleOrDefault(sf => sf.Name == RootFolderName);
 
             return packagesFolder != null;
         }
 
-        public void CreatePackagesFolder()
+        public void CreateRootFolder()
         {
-            if (PackagesFolderExists())
+            if (RootFolderExists())
             {
                 throw new InvalidOperationException("Can't create packages folder when it already exists.");
             }
             else
             {
-                _projectRootDirectory.CreateSubdirectory(PackagesFolderName);
+                PackageProject.RootFolder.CreateSubdirectory(RootFolderName);
             }
+        }
+
+        public string PackageRootFolder(Package package)
+        {
+            if (package == null)
+            {
+                throw new ArgumentNullException(nameof(package));
+            }
+
+            if (package.Identifier == null)
+            {
+                throw new ArgumentNullException(nameof(package.Identifier));
+            }
+
+            return $"{PackageProject.RootFolder.FullName}\\{RootFolderName}\\{package.Identifier}";
+        }
+
+        public string PackageRevisionFolder(PackageRevision packageRev)
+        {
+            if (packageRev == null)
+            {
+                throw new ArgumentNullException(nameof(packageRev));
+            }
+
+            if (packageRev.VersionNumber == null)
+            {
+                throw new ArgumentException("Package must have a version number in order to retrieve package revision folder.");
+            }
+
+            return $"{PackageProject.RootFolder.Name}\\{RootFolderName}\\{packageRev.Package.Identifier}\\{packageRev.VersionNumber}";
+        }
+
+        public void AddPackage(PackageRevision packageRev)
+        {
+            if (packageRev == null)
+            {
+                throw new ArgumentNullException(nameof(packageRev));
+            }
+
+            _fileSystem.Directory.CreateDirectory(PackageRootFolder(packageRev.Package));
+            _fileSystem.Directory.CreateDirectory(PackageRevisionFolder(packageRev));
+
+            //packageRev.Contents.ExtractToDirectory($"{PackageRootFolder(packageRev.Package)}\\{packageRev.VersionNumber}");
         }
     }
 }

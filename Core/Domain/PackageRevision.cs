@@ -4,8 +4,17 @@ namespace Domain
 {
     public class PackageRevision
     {
-        public string VersionNumber { get; private set; }
+        public Package Package { get; }
 
-        public ZipArchive Contents { get; private set; }
+        public string VersionNumber { get; }
+
+        public ZipArchive Contents { get; }
+
+        public PackageRevision(Package package, string versionNumber, ZipArchive contents)
+        {
+            Package = package;
+            VersionNumber = versionNumber;
+            Contents = contents;
+        }
     }
 }
