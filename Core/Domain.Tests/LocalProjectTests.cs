@@ -8,31 +8,31 @@ namespace Domain.Tests
     {
         #region Ctor
         [Fact]
-        public void LocalProjectCtor_ThrowsArgumentNullException_WhenNullRootFolderIsProvided()
+        public void Ctor_ThrowsArgumentNullException_WhenNullRootFolderIsProvided()
         {
             Assert.Throws<ArgumentNullException>(() => new LocalProject(new MockFileSystem(), null));
         }
 
         [Fact]
-        public void LocalProjectCtor_ThrowsArgumentNullException_WhenNullFileSystemIsProvided()
+        public void Ctor_ThrowsArgumentNullException_WhenNullFileSystemIsProvided()
         {
             Assert.Throws<ArgumentNullException>(() => new LocalProject(null, "SomeFolderHere"));
         }
 
         [Fact]
-        public void LocalProjectCtor_ThrowsException_WhenRootFolderDoesNotExist()
+        public void Ctor_ThrowsArgumentException_WhenRootFolderDoesNotExist()
         {
-            Assert.Throws<Exception>(() => new LocalProject(new MockFileSystem(), "SomeRandomFolder"));
+            Assert.Throws<ArgumentException>(() => new LocalProject(new MockFileSystem(), "SomeRandomFolder"));
         }
 
         [Fact]
-        public void LocalProjectCtor_DoesNotThrowException_WhenFileSystemAndRootFolderExists()
+        public void Ctor_DoesNotThrowException_WhenFileSystemAndRootFolderExists()
         {
             var rootFolder = "SomeRootHere";
             var fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(rootFolder);
 
-            new LocalProject(new MockFileSystem(), rootFolder);
+            new LocalProject(fileSystem, rootFolder);
         }
         #endregion
     }
