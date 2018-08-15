@@ -22,11 +22,7 @@ namespace Domain.Tests
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootDirectoryDoesNotExistInFileSystem()
         {
-            Assert.True(false, "TODO Need to implement this.");
-            //var mockFileSystem = new MockFileSystem();
-            //mockFileSystem.AddDirectory("TestFolder");
-
-            //Assert.Throws<ArgumentException>(() => new LocalPackageStore(mockFileSystem, "SomeNonExistentDirectory"));
+            Assert.Throws<ArgumentException>(() => new LocalPackageStore(_readonlyMockFileSystem, new LocalProject(_readonlyMockFileSystem, "SomeNonExistentDirectory")));
         }
 
         [Fact]
@@ -132,19 +128,17 @@ namespace Domain.Tests
         [Fact]
         public void AddPackage_CreatesFolderForPackageAndPackageRevision_WhenFolderDoesNotAlreadyExist()
         {
-            var projectRoot = "SomeMockRootFolder";
-
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
                 var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
                                                               "1.2.3.4",
                                                               new ZipArchive(zip));
-                var sut = new LocalPackageStore(_readonlyMockFileSystem, new LocalProject(_readonlyMockFileSystem, projectRoot));
+                var sut = new LocalPackageStore(_readonlyMockFileSystem, new LocalProject(_readonlyMockFileSystem, MockProjectFolder));
 
                 sut.AddPackage(mockPackageRevision);
 
-                Assert.True(_readonlyMockFileSystem.Directory.Exists($"{projectRoot}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}"));
-                Assert.True(_readonlyMockFileSystem.Directory.Exists($"{projectRoot}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}"));
+                Assert.True(_readonlyMockFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}"));
+                Assert.True(_readonlyMockFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}"));
             }
         }
 
@@ -177,16 +171,13 @@ namespace Domain.Tests
         [Fact]
         public void AddPackage_CreatesFolderForPackageInFileSystem_WhenFolderDoesNotAlreadyExist()
         {
-            var projectRoot = "SomeMockRootFolder";
-            var mockFileSystem = new MockFileSystem();
-            mockFileSystem.AddDirectory(projectRoot);
-
-            var sut = new LocalPackageStore(mockFileSystem, new LocalProject(mockFileSystem, projectRoot));
+            var sut = new LocalPackageStore(_readonlyMockFileSystem,
+                                            new LocalProject(_readonlyMockFileSystem, MockProjectFolder));
             var mockPackageContents = new MemoryStream(Encoding.UTF8.GetBytes("SomeTestContentHere"));
             var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"), "1.2.3.4", new ZipArchive(mockPackageContents));
             sut.AddPackage(mockPackageRevision);
 
-            Assert.True(mockFileSystem.Directory.Exists($"{sut.PackageRootFolder(mockPackageRevision.Package)}"));
+            Assert.True(_readonlyMockFileSystem.Directory.Exists($"{sut.PackageRootFolder(mockPackageRevision.Package)}"));
         }
 
         [Fact]
