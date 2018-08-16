@@ -142,29 +142,26 @@ namespace Domain.Tests
         }
 
         [Fact]
-        public void AddPackage_CreatesFolderForPackageRevision_WhenFolderForDifferentPackageRevisionIsAlreadyInstalled()
+        public void AddPackage_CreatesFolderForPackageRevision_WhenFolderForDifferentPackageRevisionAlreadyExists()
         {
-            // TODO This seems more like an integration test.
-            Assert.True(false);
-        }
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                var mockPackage = new Package("MSMSamplePackages.SampleOne.PackA");
+                var mockExistingPackageRevision = new PackageRevision(mockPackage,
+                                                                      "5.6.7.8",
+                                                                      new ZipArchive(zip));
+                var mockPackageRevision = new PackageRevision(mockPackage,
+                                                              "1.2.3.4",
+                                                              new ZipArchive(zip));
+                var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
 
+                sut.AddPackage(mockExistingPackageRevision);
+                Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}\\{mockExistingPackageRevision.VersionNumber}"));
+                sut.AddPackage(mockPackageRevision);
 
-        [Fact]
-        public void AddPackage_DoesNotTouchDestinationFolder_WhenRequestedPackageIsAlreadyInstalled()
-        {
-            var mockFolder = $"SomeProject\\{LocalPackageStore.RootFolderName}\\TestPackage\\1.2.3.4";
-            var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(mockFolder);
-
-            var expectedEditTime = fileSystem.DirectoryInfo.FromDirectoryName(mockFolder).LastWriteTime;
-
-            var sut = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, "SomeProject"));
-
-            sut.AddPackage(new PackageRevision(new Package("TestPackage"), "1.2.3.4", new ZipArchive(new MemoryStream())));
-
-            var actualEditTime = fileSystem.DirectoryInfo.FromDirectoryName(mockFolder).LastWriteTime;
-
-            Assert.Equal(expectedEditTime, actualEditTime);
+                Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}\\{mockExistingPackageRevision.VersionNumber}"));
+                Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}\\{mockPackageRevision.VersionNumber}"));
+            }
         }
 
         [Fact]
@@ -185,7 +182,19 @@ namespace Domain.Tests
         [Fact]
         public void AddPackage_ExtractsPackageContentsToFileSystem_WhenSuccessful()
         {
-            Assert.True(false);
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                var sut = new LocalPackageStore(_fakeFileSystem,
+                                                new LocalProject(_fakeFileSystem, MockProjectFolder));
+                var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
+                                                              "1.2.3.4", new ZipArchive(zip));
+                sut.AddPackage(mockPackageRevision);
+
+                Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}"));
+                var extractedFiles = _fakeFileSystem.Directory.EnumerateFiles($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}");
+                Assert.Single(extractedFiles);
+                Assert.Equal("TestFile.txt", extractedFiles.First());
+            }
         }
         #endregion
 
@@ -219,43 +228,6 @@ namespace Domain.Tests
             var result = sut.PackageRootFolder(mockPackage);
 
             Assert.Equal($"{mockFileSystem.DirectoryInfo.FromDirectoryName("SomeRootFolder")}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}", result);
-        }
-        #endregion
-
-        #region PackageRevisionFolder
-        [Fact]
-        public void PackageRevisionFolder_ThrowsArgumentNullException_WhenPackageRevisionIsNull()
-        {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            Assert.Throws<ArgumentNullException>(() => sut.PackageRevisionFolder(null));
-        }
-
-        [Fact]
-        public void PackageRevisionFolder_ThrowsArgumentException_WhenVersionNumberIsNull()
-        {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            using (var zip = new MemoryStream(Properties.Resources.mockZip))
-            {
-                Assert.Throws<ArgumentException>(() => sut.PackageRevisionFolder(new PackageRevision(new Package("Test.identifier"), null, new ZipArchive(zip))));
-            }
-        }
-
-        [Fact]
-        public void PackageRevisionFolder_ReturnsCorrectValue_WhenSuccessful()
-        {
-            var expectedResult = @"TestData\samplePackages\Test.identifier\1.2.3.4";
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            using (var zip = new MemoryStream(Properties.Resources.mockZip))
-            {
-                var mockPackageRevision = new PackageRevision(new Package("Test.identifier"), "1.2.3.4", new ZipArchive(zip));
-
-                var result = sut.PackageRevisionFolder(mockPackageRevision);
-
-                Assert.Equal(expectedResult, result);
-            }
         }
         #endregion
     }

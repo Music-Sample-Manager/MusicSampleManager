@@ -55,21 +55,6 @@ namespace Domain
             return $"{PackageProject.RootFolder.FullName}\\{RootFolderName}\\{package.Identifier}";
         }
 
-        public string PackageRevisionFolder(PackageRevision packageRev)
-        {
-            if (packageRev == null)
-            {
-                throw new ArgumentNullException(nameof(packageRev));
-            }
-
-            if (packageRev.VersionNumber == null)
-            {
-                throw new ArgumentException("Package must have a version number in order to retrieve package revision folder.");
-            }
-
-            return $"{PackageProject.RootFolder.Name}\\{RootFolderName}\\{packageRev.Package.Identifier}\\{packageRev.VersionNumber}";
-        }
-
         public void AddPackage(PackageRevision packageRev)
         {
             if (packageRev == null)
@@ -78,9 +63,9 @@ namespace Domain
             }
 
             _fileSystem.Directory.CreateDirectory(PackageRootFolder(packageRev.Package));
-            _fileSystem.Directory.CreateDirectory(PackageRevisionFolder(packageRev));
+            _fileSystem.Directory.CreateDirectory(PackageProject.PackageRevisionFolder(packageRev));
 
-            //packageRev.Contents.ExtractToDirectory($"{PackageRootFolder(packageRev.Package)}\\{packageRev.VersionNumber}");
+            //packageRev.Contents.ExtractToDirectory(PackageRevisionFolder(packageRev));
         }
     }
 }

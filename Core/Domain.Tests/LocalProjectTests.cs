@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.IO.Abstractions.TestingHelpers;
+using System.IO.Compression;
 using Xunit;
 
 namespace Domain.Tests
@@ -33,6 +35,55 @@ namespace Domain.Tests
             fileSystem.AddDirectory(rootFolder);
 
             new LocalProject(fileSystem, rootFolder);
+        }
+        #endregion
+
+        #region PackageRevisionFolder
+        [Fact]
+        public void PackageRevisionFolder_ThrowsArgumentNullException_WhenPackageRevisionIsNull()
+        {
+            var rootFolder = "TestRootFolder";
+            var fileSystem = new MockFileSystem();
+            fileSystem.AddDirectory(rootFolder);
+            var sut = new LocalProject(fileSystem, rootFolder);
+
+            Assert.Throws<ArgumentNullException>(() => sut.PackageRevisionFolder(null));
+        }
+
+
+
+        [Fact]
+        public void PackageRevisionFolder_ThrowsArgumentException_WhenVersionNumberIsNull()
+        {
+            var rootFolder = "TestRootFolder";
+            var fileSystem = new MockFileSystem();
+            fileSystem.AddDirectory(rootFolder);
+            var sut = new LocalProject(fileSystem, rootFolder);
+
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                Assert.Throws<ArgumentException>(() => sut.PackageRevisionFolder(new PackageRevision(new Package("Test.identifier"), null, new ZipArchive(zip))));
+            }
+        }
+
+        [Fact]
+        public void PackageRevisionFolder_ReturnsCorrectFolder_WhenSuccessful()
+        {
+            var rootFolder = "TestRootFolder";
+            var fileSystem = new MockFileSystem();
+            fileSystem.AddDirectory(rootFolder);
+            var sut = new LocalProject(fileSystem, rootFolder);
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                var mockPackageRevision = new PackageRevision(new Package("Some.Package"),
+                                                              "3.4.5.8",
+                                                              new ZipArchive(zip));
+
+                var result = sut.PackageRevisionFolder(mockPackageRevision);
+
+                Assert.Equal($"{sut.RootFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}", result);
+            }
+
         }
         #endregion
     }

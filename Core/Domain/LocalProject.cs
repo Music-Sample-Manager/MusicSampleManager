@@ -29,5 +29,20 @@ namespace Domain
 
             RootFolder = FileSystem.DirectoryInfo.FromDirectoryName(rootFolder);
         }
+
+        public string PackageRevisionFolder(PackageRevision packageRevision)
+        {
+            if (packageRevision == null)
+            {
+                throw new ArgumentNullException(nameof(packageRevision));
+            }
+
+            if (packageRevision.VersionNumber == null)
+            {
+                throw new ArgumentException("Package version number cannot be null");
+            }
+
+            return $"{RootFolder}\\{LocalPackageStore.RootFolderName}\\{packageRevision.Package.Identifier}\\{packageRevision.VersionNumber}";
+        }
     }
 }
