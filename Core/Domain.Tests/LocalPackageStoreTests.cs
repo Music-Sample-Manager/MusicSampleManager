@@ -179,23 +179,23 @@ namespace Domain.Tests
             }
         }
 
-        [Fact]
-        public void AddPackage_ExtractsPackageContentsToFileSystem_WhenSuccessful()
-        {
-            using (var zip = new MemoryStream(Properties.Resources.mockZip))
-            {
-                var sut = new LocalPackageStore(_fakeFileSystem,
-                                                new LocalProject(_fakeFileSystem, MockProjectFolder));
-                var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
-                                                              "1.2.3.4", new ZipArchive(zip));
-                sut.AddPackage(mockPackageRevision);
+        //[Fact]
+        //public void AddPackage_ExtractsPackageContentsToFileSystem_WhenSuccessful()
+        //{
+        //    using (var zip = new MemoryStream(Properties.Resources.mockZip))
+        //    {
+        //        var sut = new LocalPackageStore(_fakeFileSystem,
+        //                                        new LocalProject(_fakeFileSystem, MockProjectFolder));
+        //        var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
+        //                                                      "1.2.3.4", new ZipArchive(zip));
+        //        sut.AddPackage(mockPackageRevision);
 
-                Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}"));
-                var extractedFiles = _fakeFileSystem.Directory.EnumerateFiles($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}");
-                Assert.Single(extractedFiles);
-                Assert.Equal("TestFile.txt", extractedFiles.First());
-            }
-        }
+        //        Assert.True(_fakeFileSystem.Directory.Exists($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}"));
+        //        var extractedFiles = _fakeFileSystem.Directory.EnumerateFiles($"{MockProjectFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}");
+        //        Assert.Single(extractedFiles);
+        //        Assert.Equal("TestFile.txt", extractedFiles.First());
+        //    }
+        //}
         #endregion
 
         #region PackageRootFolder
