@@ -1,4 +1,3 @@
-using Core.DataLayer;
 using Moq;
 using MusicSampleManager.API.Controllers;
 using PackageDatabase;
@@ -23,7 +22,7 @@ namespace API.Tests
         [Fact]
         public void Get_WithNullPackageName_Throws()
         {
-            var packageRepo = new Mock<DbPackageRepository>();
+            var packageRepo = new Mock<IPackageRepository>();
             var sut = new PackagesController(packageRepo.Object);
 
             Assert.Throws<ArgumentNullException>(() => sut.Get(null));
