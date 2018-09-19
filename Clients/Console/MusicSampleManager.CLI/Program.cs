@@ -29,7 +29,8 @@ namespace MusicSampleManager.CLI
             loggerFactory.AddConsole();
 
             _logger = loggerFactory.CreateLogger("InformationalLogs");
-            _apiClient = new APIClient.APIClient(new HttpClient());
+
+            _apiClient = new APIClient.APIClient("https://localhost:44349", new HttpClient());
         }
 
         private static void ParseArguments(string[] args)

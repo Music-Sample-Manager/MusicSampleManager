@@ -8,16 +8,18 @@ namespace APIClient
 {
     public class APIClient
     {
+        private readonly string _apiBaseUrl;
         private readonly HttpClient _httpClient;
 
-        public APIClient(HttpClient httpClient)
+        public APIClient(string apiBaseUrl, HttpClient httpClient)
         {
+            _apiBaseUrl = apiBaseUrl;
             _httpClient = httpClient;
         }
 
         public Package FindPackageByName(string targetPackage)
         {
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri("https://localhost:44349", "api/packages", $"packageName={targetPackage}").ToString()).Result;
+            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}").ToString()).Result;
 
             var package = result.Content.ReadAsStringAsync().Result;
             return string.IsNullOrEmpty(package) ?
@@ -27,7 +29,7 @@ namespace APIClient
 
         public PackageRevision DownloadPackage(string packageName, Version packageVersion)
         {
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri("https://localhost:44349", "api/packageZips", "packageName={packageName}").ToString()).Result;
+            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}").ToString()).Result;
 
             var package = result.Content.ReadAsStringAsync().Result;
 
