@@ -76,7 +76,7 @@ namespace Domain.Tests
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
                 var mockPackageRevision = new PackageRevision(new Package("Some.Package"),
-                                                              "3.4.5.8",
+                                                              new SemVer.Version("3.4.5"),
                                                               new ZipArchive(zip));
 
                 var result = sut.PackageRevisionFolder(mockPackageRevision);

@@ -114,7 +114,7 @@ namespace Domain.Tests
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
                 var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
-                                                              "1.2.3.4",
+                                                              new SemVer.Version("1.2.3"),
                                                               new ZipArchive(zip));
                 var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
 
@@ -130,7 +130,7 @@ namespace Domain.Tests
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
                 var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
-                                                              "1.2.3.4",
+                                                              new SemVer.Version("1.2.3"),
                                                               new ZipArchive(zip));
                 var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
 
@@ -148,10 +148,10 @@ namespace Domain.Tests
             {
                 var mockPackage = new Package("MSMSamplePackages.SampleOne.PackA");
                 var mockExistingPackageRevision = new PackageRevision(mockPackage,
-                                                                      "5.6.7.8",
+                                                                      new SemVer.Version("5.6.7"),
                                                                       new ZipArchive(zip));
                 var mockPackageRevision = new PackageRevision(mockPackage,
-                                                              "1.2.3.4",
+                                                              new SemVer.Version("1.2.3"),
                                                               new ZipArchive(zip));
                 var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
 
@@ -172,7 +172,7 @@ namespace Domain.Tests
                 var sut = new LocalPackageStore(_fakeFileSystem,
                                                 new LocalProject(_fakeFileSystem, MockProjectFolder));
                 var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
-                                                              "1.2.3.4", new ZipArchive(zip));
+                                                              new SemVer.Version("1.2.3"), new ZipArchive(zip));
                 sut.AddPackage(mockPackageRevision);
 
                 Assert.True(_fakeFileSystem.Directory.Exists($"{sut.PackageRootFolder(mockPackageRevision.Package)}"));

@@ -1,6 +1,6 @@
-﻿using Domain;
+﻿using System.IO.Abstractions;
+using Domain;
 using Microsoft.Extensions.Logging;
-using System.IO.Abstractions;
 
 namespace Clients.Common.Commands
 {
@@ -35,7 +35,7 @@ namespace Clients.Common.Commands
             }
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            var package = _apiClient.DownloadPackage(targetPackageName, string.Empty);
+            var package = _apiClient.DownloadPackage(targetPackageName, new SemVer.Version(string.Empty));
 
             localPackageStore.AddPackage(package);
         }

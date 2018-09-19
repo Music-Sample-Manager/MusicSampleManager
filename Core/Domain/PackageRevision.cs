@@ -1,4 +1,5 @@
 ﻿using System.IO.Compression;
+using SemVer;
 
 namespace Domain
 {
@@ -6,11 +7,11 @@ namespace Domain
     {
         public Package Package { get; }
 
-        public string VersionNumber { get; }
+        public Version VersionNumber { get; }
 
         public ZipArchive Contents { get; }
 
-        public PackageRevision(Package package, string versionNumber, ZipArchive contents)
+        public PackageRevision(Package package, Version versionNumber, ZipArchive contents)
         {
             Package = package;
             VersionNumber = versionNumber;

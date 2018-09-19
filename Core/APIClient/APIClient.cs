@@ -1,7 +1,8 @@
-﻿using Domain;
-using Newtonsoft.Json;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Net.Http;
+using Domain;
+using Newtonsoft.Json;
+using SemVer;
 
 namespace APIClient
 {
@@ -20,7 +21,7 @@ namespace APIClient
                        JsonConvert.DeserializeObject<Package>(package);
         }
 
-        public PackageRevision DownloadPackage(string packageName, string packageVersion)
+        public PackageRevision DownloadPackage(string packageName, Version packageVersion)
         {
             var client = new HttpClient();
 
