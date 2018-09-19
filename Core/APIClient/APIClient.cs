@@ -1,9 +1,7 @@
-﻿using System;
-using System.IO.Compression;
+﻿using System.IO.Compression;
 using System.Net.Http;
 using Domain;
 using Newtonsoft.Json;
-using SemVer;
 
 namespace APIClient
 {
@@ -28,7 +26,7 @@ namespace APIClient
                        JsonConvert.DeserializeObject<Package>(package);
         }
 
-        public PackageRevision DownloadPackage(string packageName, Version packageVersion)
+        public PackageRevision DownloadPackage(string packageName, SemVer.Version packageVersion)
         {
             var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}")).Result;
 
