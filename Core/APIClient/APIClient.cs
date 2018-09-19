@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System;
+using System.IO.Compression;
 using System.Net.Http;
 using Domain;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace APIClient
 
         public Package FindPackageByName(string targetPackage)
         {
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}").ToString()).Result;
+            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}")).Result;
 
             var package = result.Content.ReadAsStringAsync().Result;
             return string.IsNullOrEmpty(package) ?
@@ -29,7 +30,7 @@ namespace APIClient
 
         public PackageRevision DownloadPackage(string packageName, Version packageVersion)
         {
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}").ToString()).Result;
+            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}")).Result;
 
             var package = result.Content.ReadAsStringAsync().Result;
 
