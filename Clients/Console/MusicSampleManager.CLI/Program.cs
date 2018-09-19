@@ -1,6 +1,7 @@
-﻿using Clients.Common.Commands;
+﻿using System;
+using System.Net.Http;
+using Clients.Common.Commands;
 using Microsoft.Extensions.Logging;
-using System;
 
 namespace MusicSampleManager.CLI
 {
@@ -28,7 +29,7 @@ namespace MusicSampleManager.CLI
             loggerFactory.AddConsole();
 
             _logger = loggerFactory.CreateLogger("InformationalLogs");
-            _apiClient = new APIClient.APIClient();
+            _apiClient = new APIClient.APIClient(new HttpClient());
         }
 
         private static void ParseArguments(string[] args)
