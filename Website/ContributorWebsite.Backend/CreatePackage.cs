@@ -13,8 +13,6 @@ namespace ContributorWebsite.Backend
         [FunctionName(nameof(CreatePackage))]
         public static IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, TraceWriter log)
         {
-            log.Info("C# HTTP trigger function processed a request.");
-
             string packageName = req.Query["packageName"];
             string packageDescription = req.Query["packageDescription"];
             int authorId = int.Parse(req.Query["authorId"]);
