@@ -5,3 +5,12 @@
 }
 
 <h2>Manage Packages</h2>
+
+<form method="POST">
+    <h2>Upload package</h2>
+    <label for="packageNameInput">Package name:</label><input type="text" id="packageNameInput" asp-for="PackageName" />
+    <label for="packageDescriptionInput">Package description:</label><textarea id="packageDescriptionInput" asp-for="PackageDescription"></textarea>
+    <label for="authorIdInput">Author id:</label><input type="number" id="authorIdInput" asp-for="PackageAuthorId" />
+    <input type="submit" />
+</form>
+<a href="~/Pages/Index.cshtml.cs">~/Pages/Index.cshtml.cs</a>
