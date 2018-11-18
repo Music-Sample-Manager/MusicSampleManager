@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace ContributorWebsite.Pages
+namespace PublicWebsite.Pages.ManagePackages
 {
-    public class ManagePackagesModel : PageModel
+    public class CreateModel : PageModel
     {
         [Required, BindProperty, StringLength(128)]
         public string PackageName { get; set; }
@@ -20,8 +16,8 @@ namespace ContributorWebsite.Pages
         [Required, BindProperty]
         public int PackageAuthorId { get; set; }
 
-        
-        
+
+
         public async void OnPostAsync()
         {
             string baseUrl = "http://localhost:7071"; // https://contributorwebsitebackend.azurewebsites.net

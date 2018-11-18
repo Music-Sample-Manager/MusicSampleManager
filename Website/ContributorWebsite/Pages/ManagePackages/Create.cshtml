@@ -1,19 +1,10 @@
 ﻿@page
-@model ContributorWebsite.Pages.ManagePackagesModel
+@model PublicWebsite.Pages.ManagePackages.CreateModel
 @{
-    ViewData["Title"] = "ManagePackages";
+    ViewData["Title"] = "Create";
 }
 
-<h2>Manage Packages</h2>
-
-<button>Create new package</button>
-<h3>Owned packages</h3>
-<ul>
-    <li>Demo package #1</li>
-    <li>Demo package #2</li>
-    <li>Demo package #3</li>
-    <li>Demo package #4</li>
-</ul>
+<h2>Create</h2>
 
 <form method="POST">
     <h2>Upload package</h2>
@@ -22,4 +13,3 @@
     <label for="authorIdInput">Author id:</label><input type="number" id="authorIdInput" asp-for="PackageAuthorId" />
     <input type="submit" />
 </form>
-<a href="~/Pages/Index.cshtml.cs">~/Pages/Index.cshtml.cs</a>
