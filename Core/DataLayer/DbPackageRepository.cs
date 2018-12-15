@@ -1,10 +1,10 @@
-﻿using Domain;
-using Microsoft.EntityFrameworkCore;
-using PackageDatabase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
+using Domain;
+using Microsoft.EntityFrameworkCore;
+using PackageDatabase;
 
 namespace Core.DataLayer
 {
@@ -18,7 +18,7 @@ namespace Core.DataLayer
         {
             var allPackages = GetAll();
 
-            var result = allPackages.Where(p => p.Identifier == packageName);
+            var result = allPackages.Where(p => p.Identifier == packageName).ToList();
 
             if (result.Count() == 1)
             {
