@@ -12,8 +12,11 @@
 
 <h3>Owned packages</h3>
 <ul>
-    <li>Demo package #1</li>
-    <li>Demo package #2</li>
-    <li>Demo package #3</li>
-    <li>Demo package #4</li>
+    @foreach (var package in Model.Packages)
+    {
+        <li>
+            <a class="btn btn-primary"
+               href="/ManagePackages/Package?packageId=@package.Id">@package.Identifier</a>
+        </li>
+    }
 </ul>
