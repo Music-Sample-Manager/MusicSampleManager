@@ -1,0 +1,17 @@
+﻿@page
+@model PublicWebsite.Pages.ManagePackages.AddRevisionModel
+@{
+    ViewData["Title"] = "AddRevision";
+}
+
+<h2>AddRevision</h2>
+@Model.Package.Id
+@Model.Package.Identifier
+
+<form asp-controller="Packages" asp-action="AddRevision" method="POST"
+      enctype="multipart/form-data">
+    <label for="versionNumberInput">Version number:</label><input type="text" id="versionNumberInput" asp-for="VersionNumber" />
+    <input type="file" name="packageRevisionFile" />
+
+    <input class="btn btn-primary" type="submit" />
+</form>
