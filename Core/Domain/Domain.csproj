@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="SemanticVersioning" Version="1.2.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="2.1.0.211" />
+    <PackageReference Include="System.IO.Abstractions" Version="3.0.2" />
   </ItemGroup>
 
 </Project>
