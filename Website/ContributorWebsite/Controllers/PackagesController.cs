@@ -7,7 +7,12 @@ namespace PublicWebsite
     [ApiController]
     public class PackagesController : ControllerBase
     {
-        private readonly APIClient.APIClient _apiClient = new APIClient.APIClient();
+        private readonly APIClient.APIClient _apiClient;
+
+        public PackagesController(APIClient.APIClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
 
         [HttpPost("Create")]
         public ActionResult Create()

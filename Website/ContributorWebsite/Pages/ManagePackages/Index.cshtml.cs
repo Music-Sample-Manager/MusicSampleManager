@@ -8,7 +8,12 @@ namespace ContributorWebsite.Pages
 {
     public class ManagePackagesModel : PageModel
     {
-        private readonly APIClient _apiClient = new APIClient();
+        private readonly APIClient _apiClient;
+
+        public ManagePackagesModel(APIClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
 
         public List<PackageRec> Packages { get; set; }
 

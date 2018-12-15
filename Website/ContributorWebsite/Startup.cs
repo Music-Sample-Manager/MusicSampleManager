@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PublicWebsite.APIClient;
 
 namespace ContributorWebsite
 {
@@ -61,6 +62,9 @@ namespace ContributorWebsite
                 options.Filters.Add(new AuthorizeFilter(policy));
             })
             .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            // DI Config
+            services.AddSingleton<APIClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

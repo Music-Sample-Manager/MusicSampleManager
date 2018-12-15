@@ -7,7 +7,12 @@ namespace PublicWebsite.Pages.ManagePackages
 {
     public class AddRevisionModel : PageModel
     {
-        private readonly APIClient.APIClient _apiClient = new APIClient.APIClient();
+        private readonly APIClient.APIClient _apiClient;
+
+        public AddRevisionModel(APIClient.APIClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
 
         [Required, BindProperty, StringLength(20)]
         public string VersionNumber { get; set; }

@@ -8,7 +8,12 @@ namespace PublicWebsite.Pages.ManagePackages
 {
     public class PackageModel : PageModel
     {
-        private readonly APIClient.APIClient _apiClient = new APIClient.APIClient();
+        private readonly APIClient.APIClient _apiClient;
+
+        public PackageModel(APIClient.APIClient apiClient)
+        {
+            _apiClient = apiClient;
+        }
 
         [BindProperty]
         public PackageRec Package { get; set; }
