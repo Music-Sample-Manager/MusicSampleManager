@@ -1,0 +1,24 @@
+﻿@page
+@model PublicWebsite.Pages.ManagePackages.PackageModel
+@{
+    ViewData["Title"] = "Package";
+}
+
+<h2>@Model.Package.Identifier</h2>
+<div class="well">@Model.Package.Description</div>
+<h3>Author: @Model.Package.AuthorId</h3>
+
+<h3>Revisions</h3>
+<div>
+    <a class="btn btn-primary"
+       href="/ManagePackages/AddRevision?packageId=@Model.Package.Id"
+       role="button">Upload New Revision</a>
+</div>
+<ul>
+    @foreach (var revision in Model.PackageRevisions)
+    {
+        <li>
+            @revision.VersionNumber
+        </li>
+    }
+</ul>
