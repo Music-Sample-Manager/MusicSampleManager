@@ -17,7 +17,7 @@
     <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <TargetLanguage>CS</TargetLanguage>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <SqlServerVerification>False</SqlServerVerification>
@@ -61,6 +61,8 @@
     <Folder Include="Tables" />
     <Folder Include="Scripts" />
     <Folder Include="Scripts\Post-Deploy" />
+    <Folder Include="Security" />
+    <Folder Include="Security\Users" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\Packages.sql" />

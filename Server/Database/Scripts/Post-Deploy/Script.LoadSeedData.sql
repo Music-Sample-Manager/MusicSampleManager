@@ -37,6 +37,5 @@ VALUES ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.0.1'),
 
 	   ((SELECT Id FROM Packages WHERE Identifier = @LiveSchool), '1.0.1.0'),
 	   ((SELECT Id FROM Packages WHERE Identifier = @Ableton), '1.0.1.1'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @Ableton), '1.0.1.1'),
 	   ((SELECT Id FROM Packages WHERE Identifier = @VPO), '3.1.0.0')
 GO
