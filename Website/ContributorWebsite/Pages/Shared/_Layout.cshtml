@@ -34,6 +34,17 @@
                     <li><a asp-page="/ManagePackages/Index">Manage Packages</a></li>
                     <li><a asp-page="/About">About</a></li>
                     <li><a asp-page="/Contact">Contact</a></li>
+                    <li style="color: white">
+                        <a asp-page="/Profile">Hello, @User.FindFirst("Name").Value</a>
+                    </li>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-controller="Authentication" asp-action="SignOut">Log Out</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-page="/LogIn">Log In</a></li>
+                    }
                 </ul>
             </div>
         </div>
