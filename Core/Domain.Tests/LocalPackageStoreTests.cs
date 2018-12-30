@@ -227,7 +227,7 @@ namespace Domain.Tests
 
             var result = sut.PackageRootFolder(mockPackage);
 
-            Assert.Equal($"{mockFileSystem.DirectoryInfo.FromDirectoryName("SomeRootFolder")}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}", result);
+            Assert.Equal($"{mockFileSystem.DirectoryInfo.FromDirectoryName("SomeRootFolder").FullName}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}", result);
         }
         #endregion
     }
