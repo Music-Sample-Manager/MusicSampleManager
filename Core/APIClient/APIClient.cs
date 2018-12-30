@@ -38,5 +38,14 @@ namespace APIClient
                                                     default(ZipArchive) :
                                                     JsonConvert.DeserializeObject<ZipArchive>(package));
         }
+
+        public PackageRevision DownloadLatestVersionOfPackage(string targetPackageName)
+        {
+            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips/latest", $"packageName={targetPackageName}")).Result;
+
+            var packageRevision = result.Content.ReadAsStringAsync().Result;
+
+            return (PackageRevision)((object)packageRevision);
+        }
     }
 }
