@@ -17,33 +17,40 @@
     </environment>
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-page="/Index" class="navbar-brand">Music Sample Manager</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-page="/Index">Home</a></li>
-                    <li><a asp-page="/ManagePackages/Index">Manage Packages</a></li>
-                    <li><a asp-page="/About">About</a></li>
-                    <li><a asp-page="/Contact">Contact</a></li>
-                    <li style="color: white">
-                        <a asp-page="/Profile">Hello, @User.FindFirst("Name").Value</a>
+            <a asp-page="/Index" class="navbar-brand">Music Sample Manager</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" asp-page="/Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/ManagePackages/Index">Manage Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/About">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-page="/Contact">Contact</a>
+                    </li>
+                    <li class="nav-item" style="color: white">
+                        <a class="nav-link" asp-page="/Profile">Hello, @User.FindFirst("Name").Value</a>
                     </li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li><a asp-controller="Authentication" asp-action="SignOut">Log Out</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Authentication" asp-action="SignOut">Log Out</a>
+                        </li>
                     }
                     else
                     {
-                        <li><a asp-page="/LogIn">Log In</a></li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-page="/LogIn">Log In</a>
+                        </li>
                     }
                 </ul>
             </div>
