@@ -3,7 +3,7 @@ using PackageDatabase;
 using System;
 using System.IO.Compression;
 
-namespace MusicSampleManager.API.Controllers
+namespace PublicWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -92,5 +92,28 @@ namespace ContributorWebsite
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+
+
+
+
+
+        // TODO This is all pulled from the old API that is now removed. Need to integrate this into the migrated-to API (this project).
+        //////public Startup(IConfiguration configuration)
+        //////{
+        //////    Configuration = configuration;
+        //////}
+
+        //////public IConfiguration Configuration { get; }
+
+        //////// This method gets called by the runtime. Use this method to add services to the container.
+        //////public void ConfigureServices(IServiceCollection services)
+        //////{
+        //////    services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+        //////    var dbConnString = Configuration["DatabaseConnectionString"];
+
+        //////    services.AddDbContext<DbPackageRepository>(options => options.UseSqlServer(dbConnString));
+        //////    services.AddScoped<IPackageRepository, DbPackageRepository>();
+        //////}
     }
 }

@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Domain;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PackageDatabase;
+using System;
 
 namespace PublicWebsite
 {
@@ -8,10 +11,12 @@ namespace PublicWebsite
     public class PackagesController : ControllerBase
     {
         private readonly APIClient.APIClient _apiClient;
+        private readonly IPackageRepository _packageRepository;
 
-        public PackagesController(APIClient.APIClient apiClient)
+        public PackagesController(APIClient.APIClient apiClient, IPackageRepository packageRepostiory)
         {
             _apiClient = apiClient;
+            _packageRepository = packageRepostiory;
         }
 
         [HttpPost("Create")]
@@ -35,6 +40,21 @@ namespace PublicWebsite
             _apiClient.AddPackageRevision(versionNumber, packageRevisionFile);
 
             return new OkResult();
+        }
+
+        public ActionResult<Package> Get([FromQuery] string packageName)
+        {
+            if (packageName == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            if (packageName == string.Empty)
+            {
+                throw new ArgumentException();
+            }
+
+            return _packageRepository.FindByName(packageName);
         }
     }
 }
