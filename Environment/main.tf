@@ -4,6 +4,8 @@ variable "client_certificate_path" {}
 variable "tenant_id" {}
 variable "client_certificate_password" {}
 
+# variable "azure_sql_server_admin_password" {}
+
 provider "azurerm" {
   # Whilst version is optional, we /strongly recommend/ using it to pin the version of the Provider being used
   version = "=1.20.0"
@@ -15,22 +17,26 @@ provider "azurerm" {
   tenant_id                   = "${var.tenant_id}"
 }
 
+# module "AzureAdConfig" {
+#   source = "./Modules/azure_ad_config/"
+# }
+
 resource "azurerm_resource_group" "MusicSampleManagerResourceGroup" {
   name     = "MusicSampleManagerRG"
   location = "East US"
 }
 
-# resource "azurerm_sql_server" "MusicSampleManagerDBServer" {
-#   name                         = "msmds"
-#   resource_group_name          = "${azurerm_resource_group.test.name}"
-#   location                     = "${azurerm_resource_group.test.location}"
-#   version                      = "12.0"
-#   administrator_login          = ""
-#   administrator_login_password = ""
+resource "azurerm_storage_account" "WebsiteBackendSA" {
+  name                     = "contributorwebsitebacken"
+  resource_group_name      = "${azurerm_resource_group.MusicSampleManagerResourceGroup.name}"
+  location                 = "centralus"
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
 
-
-#   tags {
-#     environment = "production"
-#   }
-# }
-
+resource "azurerm_storage_container" "XMLSchemasContainer" {
+  name                  = "schemas"
+  resource_group_name   = "${azurerm_resource_group.MusicSampleManagerResourceGroup.name}"
+  storage_account_name  = "${azurerm_storage_account.WebsiteBackendSA.name}"
+  container_access_type = "blob"
+}
