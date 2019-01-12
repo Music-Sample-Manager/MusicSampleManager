@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using Domain;
 using Microsoft.Extensions.Logging;
 
@@ -35,7 +36,7 @@ namespace Clients.Common.Commands
             }
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            var package = _apiClient.DownloadPackage(targetPackageName, new SemVer.Version(string.Empty));
+            var package = _apiClient.DownloadLatestVersionOfPackage(targetPackageName);
 
             localPackageStore.AddPackage(package);
         }
@@ -44,7 +45,19 @@ namespace Clients.Common.Commands
         {
             _logger.LogInformation("Verifying that the target package exists...");
 
-            var result = _apiClient.FindPackageByName(targetPackageName);
+            var searchSucceeded = _apiClient.TryFindPackageByName(targetPackageName, out Package package);
+
+            if (searchSucceeded)
+            {
+                if (package == default(Package))
+                {
+                    _logger.LogError($"Could not find package {targetPackageName}");
+                }
+            }
+            else
+            {
+                _logger.LogError("Search did not succeed. Is the API available? Is your Internet connection working?");
+            }
         }
     }
 }

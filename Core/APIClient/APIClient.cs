@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System;
+using System.IO.Compression;
 using System.Net.Http;
 using Domain;
 using Newtonsoft.Json;
@@ -16,14 +17,30 @@ namespace APIClient
             _httpClient = httpClient;
         }
 
-        public Package FindPackageByName(string targetPackage)
+        public bool TryFindPackageByName(string targetPackage, out Package package)
         {
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}")).Result;
+            try
+            {
+                var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}")).Result;
 
-            var package = result.Content.ReadAsStringAsync().Result;
-            return string.IsNullOrEmpty(package) ?
-                       default(Package) :
-                       JsonConvert.DeserializeObject<Package>(package);
+                var resultPackage = result.Content.ReadAsStringAsync().Result;
+
+                if (string.IsNullOrEmpty(resultPackage))
+                {
+                    package = default(Package);
+                }
+                else
+                {
+                    package = JsonConvert.DeserializeObject<Package>(resultPackage);
+                }
+                return true;                
+            }
+            catch (Exception)
+            {
+                // TODO We should probably log something here.
+                package = default(Package);
+                return false;
+            }
         }
 
         public PackageRevision DownloadPackage(string packageName, SemVer.Version packageVersion)
