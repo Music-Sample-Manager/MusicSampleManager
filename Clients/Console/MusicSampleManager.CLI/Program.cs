@@ -12,9 +12,6 @@ namespace MusicSampleManager.CLI
 
         static void Main(string[] args)
         {
-            // TODO UNDO THIS LATER:
-            args = new[] { "Install", "VirtualPlayingOrchestra" };
-
             ConfigureDI();
 
             _logger.LogInformation("msm {Command}", string.Join(" ", args));
@@ -30,6 +27,7 @@ namespace MusicSampleManager.CLI
 
             _logger = loggerFactory.CreateLogger("InformationalLogs");
 
+            // TODO This should be easily configurable for use in various environments, etc.
             _apiClient = new APIClient.APIClient("https://localhost:44349", new HttpClient());
         }
 
