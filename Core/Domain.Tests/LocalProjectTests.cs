@@ -52,39 +52,39 @@ namespace Domain.Tests
 
 
 
-        //[Fact]
-        //public void PackageRevisionFolder_ThrowsArgumentException_WhenVersionNumberIsNull()
-        //{
-        //    var rootFolder = "TestRootFolder";
-        //    var fileSystem = new MockFileSystem();
-        //    fileSystem.AddDirectory(rootFolder);
-        //    var sut = new LocalProject(fileSystem, rootFolder);
+        [Fact]
+        public void PackageRevisionFolder_ThrowsArgumentException_WhenVersionNumberIsNull()
+        {
+            var rootFolder = "TestRootFolder";
+            var fileSystem = new MockFileSystem();
+            fileSystem.AddDirectory(rootFolder);
+            var sut = new LocalProject(fileSystem, rootFolder);
 
-        //    using (var zip = new MemoryStream(Properties.Resources.mockZip))
-        //    {
-        //        Assert.Throws<ArgumentException>(() => sut.PackageRevisionFolder(new PackageRevision(new Package("Test.identifier"), null, new ZipArchive(zip))));
-        //    }
-        //}
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                Assert.Throws<ArgumentException>(() => sut.PackageRevisionFolder(new PackageRevision(new Package("Test.identifier"), null, new ZipArchive(zip))));
+            }
+        }
 
-        //[Fact]
-        //public void PackageRevisionFolder_ReturnsCorrectFolder_WhenSuccessful()
-        //{
-        //    var rootFolder = "TestRootFolder";
-        //    var fileSystem = new MockFileSystem();
-        //    fileSystem.AddDirectory(rootFolder);
-        //    var sut = new LocalProject(fileSystem, rootFolder);
-        //    using (var zip = new MemoryStream(Properties.Resources.mockZip))
-        //    {
-        //        var mockPackageRevision = new PackageRevision(new Package("Some.Package"),
-        //                                                      new SemVer.Version("3.4.5"),
-        //                                                      new ZipArchive(zip));
+        [Fact]
+        public void PackageRevisionFolder_ReturnsCorrectFolder_WhenSuccessful()
+        {
+            var rootFolder = "TestRootFolder";
+            var fileSystem = new MockFileSystem();
+            fileSystem.AddDirectory(rootFolder);
+            var sut = new LocalProject(fileSystem, rootFolder);
+            using (var zip = new MemoryStream(Properties.Resources.mockZip))
+            {
+                var mockPackageRevision = new PackageRevision(new Package("Some.Package"),
+                                                              new SemVer.Version("3.4.5"),
+                                                              new ZipArchive(zip));
 
-        //        var result = sut.PackageRevisionFolder(mockPackageRevision);
+                var result = sut.PackageRevisionFolder(mockPackageRevision);
 
-        //        Assert.Equal($"{sut.RootFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}", result);
-        //    }
+                Assert.Equal($"{sut.RootFolder}\\{LocalPackageStore.RootFolderName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}", result);
+            }
 
-        //}
+        }
         #endregion
     }
 }
