@@ -1,9 +1,7 @@
-﻿using DataLayer.Entities;
-using Domain;
-using System.Collections.Generic;
+﻿using Domain;
 using System.ComponentModel.DataAnnotations;
 
-namespace Core.DataLayer
+namespace DataLayer.Entities
 {
     public class PackageRec
     {

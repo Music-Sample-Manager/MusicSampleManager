@@ -1,5 +1,4 @@
-﻿using Core.DataLayer;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataLayer.Entities
 {
