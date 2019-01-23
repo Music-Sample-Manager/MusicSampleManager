@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace PublicWebsite.APIClient
+﻿namespace PublicWebsite.APIClient
 {
     internal class RequestUrlBuilder
     {
-        private static readonly string BaseUrl = "http://localhost:7071/api/"; // https://contributorwebsitebackend.azurewebsites.net
+        private static readonly string BaseUrl = "http://host.docker.internal:7071/api/"; // "http://localhost:7071/api/"; // https://contributorwebsitebackend.azurewebsites.net
 
         internal static string BuildUrl(string action)
         {
