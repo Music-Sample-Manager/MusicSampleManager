@@ -1,4 +1,4 @@
-﻿using Core.DataLayer;
+﻿using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;

@@ -1,4 +1,4 @@
-﻿using Core.DataLayer;
+﻿using DataLayer.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicWebsite.APIClient;
 using System.Collections.Generic;
