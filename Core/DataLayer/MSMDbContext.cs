@@ -1,5 +1,4 @@
-﻿using Core.DataLayer;
-using DataLayer.Entities;
+﻿using DataLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
