@@ -328,3 +328,8 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+
+Website/ContributorWebsite/wwwroot/lib/*
+/Environment/.terraform/plugins/windows_amd64
+/Environment/.terraform
+/Environment/terraform.tfvars
