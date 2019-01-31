@@ -19,6 +19,9 @@ namespace APIClient
 
         public bool TryFindPackageByName(string targetPackage, out Package package)
         {
+            // TODO If this fails we should bubble that up to the UI somehow.
+            ValidatePackageName(targetPackage);
+
             try
             {
                 var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages", $"packageName={targetPackage}")).Result;
@@ -35,7 +38,7 @@ namespace APIClient
                 }
                 return true;                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // TODO We should probably log something here.
                 package = default(Package);
@@ -45,6 +48,9 @@ namespace APIClient
 
         public PackageRevision DownloadPackage(string packageName, SemVer.Version packageVersion)
         {
+            // TODO If this fails we should bubble that up to the UI somehow.
+            ValidatePackageName(packageName);
+
             var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}")).Result;
 
             var package = result.Content.ReadAsStringAsync().Result;
@@ -56,13 +62,32 @@ namespace APIClient
                                                     JsonConvert.DeserializeObject<ZipArchive>(package));
         }
 
-        public PackageRevision DownloadLatestVersionOfPackage(string targetPackageName)
+        public PackageRevision GetLatestPackageZip(string targetPackageName)
         {
+            // TODO If this fails we should bubble that up to the UI somehow.
+            ValidatePackageName(targetPackageName);
+
             var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips/latest", $"packageName={targetPackageName}")).Result;
 
             var packageRevision = result.Content.ReadAsStringAsync().Result;
 
             return (PackageRevision)((object)packageRevision);
+        }
+
+        private bool ValidatePackageName(string packageName)
+        {
+            if (packageName == string.Empty)
+            {
+                throw new ArgumentException(nameof(packageName));
+            }
+            else if (packageName == null)
+            {
+                throw new ArgumentNullException(nameof(packageName));
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

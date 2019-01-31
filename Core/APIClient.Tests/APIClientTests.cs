@@ -2,6 +2,7 @@
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -89,6 +90,28 @@ namespace APIClient.Tests
 
             Assert.False(searchSucceeded);
             Assert.Null(package);
+        }
+        #endregion
+
+        #region GetLatestPackageZipTests
+        [Fact]
+        public void GetLatestPackageZipTests_ThrowsArgumentException_WhenTargetPackageNameIsEmpty()
+        {
+            var sut = new APIClient("https://example.com", new HttpClient());
+
+            var exception = Assert.Throws<ArgumentException>(() => sut.GetLatestPackageZip(string.Empty));
+
+            Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public void GetLatestPackageZipTests_ThrowsArgumentNullException_WhenTargetPackageNameIsNull()
+        {
+            var sut = new APIClient("https://example.com", new HttpClient());
+
+            var exception = Assert.Throws<ArgumentNullException>(() => sut.GetLatestPackageZip(null));
+
+            Assert.NotNull(exception);
         }
         #endregion
     }
