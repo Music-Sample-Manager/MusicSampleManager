@@ -7,6 +7,17 @@ trigger:
 - master
 
 pool:
+- task: SqlAzureDacpacDeployment@1
+  inputs:
+    azureSubscription: 'MSM.Application Subscription'
+    AuthenticationType: 'server'
+    ServerName: 'msmds.database.windows.net'
+    DatabaseName: 'msmdb'
+    SqlUsername: 'msmdsadmin'
+    SqlPassword: 'KrP%Z5Sp7Gf7HJ4!^k7sa3L!QVnAFZKjH1peIKdZ'
+    deployType: 'DacpacTask'
+    DeploymentAction: 'Publish'
+    IpDetectionMethod: 'AutoDetect'
   vmImage: 'Ubuntu-16.04'
 
 steps:
