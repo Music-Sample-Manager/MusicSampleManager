@@ -1,6 +1,7 @@
 ﻿using System.IO.Abstractions;
 using Domain;
 using Microsoft.Extensions.Logging;
+using PackagesService.Domain;
 
 namespace Clients.Common.Commands
 {
@@ -35,7 +36,7 @@ namespace Clients.Common.Commands
             }
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            var package = _apiClient.DownloadLatestVersionOfPackage(targetPackageName);
+            var package = _apiClient.GetLatestPackageZip(targetPackageName);
 
             localPackageStore.AddPackage(package);
         }

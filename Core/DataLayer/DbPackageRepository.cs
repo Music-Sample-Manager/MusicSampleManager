@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
 using DataLayer.Entities;
-using Domain;
 using Microsoft.EntityFrameworkCore;
-using PackageDatabase;
+using PackagesService.Domain;
 
 namespace Core.DataLayer
 {

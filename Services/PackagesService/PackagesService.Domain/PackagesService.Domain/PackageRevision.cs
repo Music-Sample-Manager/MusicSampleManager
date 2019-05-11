@@ -1,17 +1,17 @@
 ﻿using System.IO.Compression;
-using SemVer;
+using Semver;
 
-namespace Domain
+namespace PackagesService.Domain
 {
     public class PackageRevision
     {
         public Package Package { get; }
 
-        public Version VersionNumber { get; }
+        public SemVersion VersionNumber { get; }
 
         public ZipArchive Contents { get; }
 
-        public PackageRevision(Package package, Version versionNumber, ZipArchive contents)
+        public PackageRevision(Package package, SemVersion versionNumber, ZipArchive contents)
         {
             Package = package;
             VersionNumber = versionNumber;

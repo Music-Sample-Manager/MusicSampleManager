@@ -1,8 +1,9 @@
 ﻿using System;
 using System.IO.Compression;
 using System.Net.Http;
-using Domain;
 using Newtonsoft.Json;
+using PackagesService.Domain;
+using Semver;
 
 namespace APIClient
 {
@@ -46,7 +47,7 @@ namespace APIClient
             }
         }
 
-        public PackageRevision DownloadPackage(string packageName, SemVer.Version packageVersion)
+        public PackageRevision DownloadPackage(string packageName, SemVersion packageVersion)
         {
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(packageName);

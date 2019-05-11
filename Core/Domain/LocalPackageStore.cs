@@ -1,5 +1,7 @@
-﻿using System;
+﻿using PackagesService.Domain;
+using System;
 using System.IO.Abstractions;
+using System.IO.Compression;
 using System.Linq;
 
 namespace Domain
@@ -65,7 +67,7 @@ namespace Domain
             _fileSystem.Directory.CreateDirectory(PackageRootFolder(packageRev.Package));
             _fileSystem.Directory.CreateDirectory(PackageProject.PackageRevisionFolder(packageRev));
 
-            //packageRev.Contents.ExtractToDirectory(PackageRevisionFolder(packageRev));
+            packageRev.Contents.ExtractToDirectory(PackageProject.PackageRevisionFolder(packageRev));
         }
     }
 }

@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Services\PackagesService\PackagesService.Domain\PackagesService.Domain\PackagesService.Domain.csproj" />
     <ProjectReference Include="..\PublicWebsite.APIClient\PublicWebsite.APIClient.csproj" />
   </ItemGroup>
 

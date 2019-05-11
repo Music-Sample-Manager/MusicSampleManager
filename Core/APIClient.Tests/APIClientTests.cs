@@ -1,7 +1,7 @@
-﻿using Domain;
-using Moq;
+﻿using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
+using PackagesService.Domain;
 using System;
 using System.Net;
 using System.Net.Http;
@@ -112,6 +112,17 @@ namespace APIClient.Tests
             var exception = Assert.Throws<ArgumentNullException>(() => sut.GetLatestPackageZip(null));
 
             Assert.NotNull(exception);
+        }
+
+        [Fact]
+        public void GetLatestPackageZipTests_Succeeds_WhenTargetPackageNameIsValid()
+        {
+            var sut = new APIClient("https://example.com", new HttpClient());
+
+            var result = sut.GetLatestPackageZip("SomeValidPackageName");
+
+            Assert.NotNull(result);
+            Assert.IsType<PackageRevision>(result);
         }
         #endregion
     }

@@ -1,3 +1,4 @@
+using PackagesService.Domain;
 using System;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;

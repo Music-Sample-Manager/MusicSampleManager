@@ -18,7 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Core\PackageDatabase\PackageDatabase.csproj" />
       <ProjectReference Include="..\..\..\Website\ContributorWebsite\PublicWebsite.csproj" />
       <ProjectReference Include="..\..\..\Website\PublicWebsite.APIClient\PublicWebsite.APIClient.csproj" />
     </ItemGroup>

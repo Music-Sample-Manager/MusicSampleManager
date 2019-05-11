@@ -1,7 +1,6 @@
-﻿using Domain;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using PackageDatabase;
+using PackagesService.Domain;
 using System;
 
 namespace PublicWebsite

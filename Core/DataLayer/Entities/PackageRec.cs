@@ -1,4 +1,4 @@
-﻿using Domain;
+﻿using PackagesService.Domain;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataLayer.Entities

@@ -1,5 +1,5 @@
 using Moq;
-using PackageDatabase;
+using PackagesService.Domain;
 using PublicWebsite;
 using PublicWebsite.APIClient;
 using System;
