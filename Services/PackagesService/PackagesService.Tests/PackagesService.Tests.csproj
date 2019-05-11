@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PackagesService.API\PackagesService.API.csproj" />
+    <ProjectReference Include="..\PackagesService.API\PackagesService.API.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
