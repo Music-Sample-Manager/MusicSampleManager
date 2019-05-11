@@ -3,10 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
-
-using DataLayer;
 using System.Linq;
 using Microsoft.Azure.WebJobs.Host;
+using PackagesService.DAL;
 
 namespace ContributorWebsite.Backend.PackageRevisions
 {

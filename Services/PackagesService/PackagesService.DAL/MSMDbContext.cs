@@ -1,8 +1,8 @@
-﻿using DataLayer.Entities;
+﻿using PackagesService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DataLayer
+namespace PackagesService.DAL
 {
     public class MSMDbContext : DbContext
     {

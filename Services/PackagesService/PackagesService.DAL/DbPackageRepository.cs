@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.IO.Compression;
 using System.Linq;
-using DataLayer.Entities;
+using PackagesService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 using PackagesService.Domain;
 
-namespace Core.DataLayer
+namespace PackagesService.DAL
 {
     public class DbPackageRepository : DbContext, IPackageRepository
     {

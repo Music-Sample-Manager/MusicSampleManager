@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DataLayer.Entities
+namespace PackagesService.DAL.Entities
 {
     public class PackageRevisionRec
     {

@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\..\Services\PackagesService\PackagesService.DAL\PackagesService.DAL.csproj" />
   </ItemGroup>
 
 </Project>

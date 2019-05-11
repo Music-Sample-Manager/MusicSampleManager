@@ -1,5 +1,5 @@
-﻿using DataLayer.Entities;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using PackagesService.DAL.Entities;
 using PublicWebsite.APIClient;
 using System.Collections.Generic;
 using System.Threading.Tasks;

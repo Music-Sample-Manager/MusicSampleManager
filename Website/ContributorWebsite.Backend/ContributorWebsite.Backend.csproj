@@ -8,7 +8,7 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\DataLayer\DataLayer.csproj" />
+    <ProjectReference Include="..\..\Services\PackagesService\PackagesService.DAL\PackagesService.DAL.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

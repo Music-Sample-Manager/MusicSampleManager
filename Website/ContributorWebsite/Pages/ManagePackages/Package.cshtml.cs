@@ -1,6 +1,6 @@
-﻿using DataLayer.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using PackagesService.DAL.Entities;
 using System.Collections.Generic;
 
 namespace PublicWebsite.Pages.ManagePackages
