@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using PackagesService.Domain;
 using Semver;
 
-namespace APIClient
+namespace PackagesService.API.Client
 {
     public class APIClient
     {

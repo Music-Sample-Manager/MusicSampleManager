@@ -1,6 +1,7 @@
 ﻿using System.IO.Abstractions;
 using Domain;
 using Microsoft.Extensions.Logging;
+using PackagesService.API.Client;
 using PackagesService.Domain;
 
 namespace Clients.Common.Commands
@@ -8,9 +9,9 @@ namespace Clients.Common.Commands
     public class InstallPackageCommand
     {
         private readonly ILogger _logger;
-        private readonly APIClient.APIClient _apiClient;
+        private readonly APIClient _apiClient;
 
-        public InstallPackageCommand(ILogger logger, APIClient.APIClient apiClient)
+        public InstallPackageCommand(ILogger logger, APIClient apiClient)
         {
             _logger = logger;
             _apiClient = apiClient;

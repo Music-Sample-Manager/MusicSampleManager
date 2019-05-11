@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace APIClient.Tests
+namespace PackagesService.API.Client.Tests
 {
     public class APIClientTests
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace APIClient
+namespace PackagesService.API.Client
 {
     public class UriBuilder
     {

@@ -2,13 +2,14 @@
 using System.Net.Http;
 using Clients.Common.Commands;
 using Microsoft.Extensions.Logging;
+using PackagesService.API.Client;
 
 namespace MusicSampleManager.CLI
 {
     class Program
     {
         private static ILogger _logger;
-        private static APIClient.APIClient _apiClient;
+        private static APIClient _apiClient;
 
         static void Main(string[] args)
         {
@@ -28,7 +29,7 @@ namespace MusicSampleManager.CLI
             _logger = loggerFactory.CreateLogger("InformationalLogs");
 
             // TODO This should be easily configurable for use in various environments, etc.
-            _apiClient = new APIClient.APIClient("https://localhost:44349", new HttpClient());
+            _apiClient = new APIClient("https://localhost:44349", new HttpClient());
         }
 
         private static void ParseArguments(string[] args)

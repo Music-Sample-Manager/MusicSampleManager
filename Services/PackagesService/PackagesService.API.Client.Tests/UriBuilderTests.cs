@@ -1,7 +1,7 @@
 using System;
 using Xunit;
 
-namespace APIClient.Tests
+namespace PackagesService.API.Client.Tests
 {
     public class UriBuilderTests
     {
