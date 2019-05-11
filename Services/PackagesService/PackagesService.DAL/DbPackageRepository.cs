@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO.Compression;
 using System.Linq;
 using PackagesService.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -34,11 +33,11 @@ namespace PackagesService.DAL
             }
         }
 
-        public ZipArchive DownloadLatestByName(string packageName)
+        public PackageRevision FindLatestRevisionByPackageName(string packageName)
         {
             var package = FindByName(packageName);
 
-            return package.LatestVersion().Contents;
+            return package.AllVersions.Last();
         }
 
         public DbPackageRepository(DbContextOptions<DbPackageRepository> options) : base(options) { }

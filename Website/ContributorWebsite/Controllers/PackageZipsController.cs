@@ -28,7 +28,7 @@ namespace PublicWebsite.Controllers
                 throw new ArgumentException();
             }
 
-            return _packageRepository.DownloadLatestByName(packageName);
+            return _packageRepository.FindLatestRevisionByPackageName(packageName).Contents;
         }
     }
 }
