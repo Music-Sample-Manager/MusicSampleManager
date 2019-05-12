@@ -1,28 +1,51 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Primitives;
 using NUnit.Framework;
-using PackagesService.API.Controllers;
+using PackagesService.API.Packages;
+using PackagesService.API.WebAPI.Controllers;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace PackagesService.Tests.Controllers
 {
     class PackagesControllerTests
     {
         private PackagesController _packagesController;
+        private ILogger _logger;
 
         [SetUp]
         public void Setup()
         {
             _packagesController = new PackagesController();
+            _logger = NullLoggerFactory.Instance.CreateLogger("Test");
         }
 
         [Test]
-        public void Get_WhenValidPackageNameIsProvided_ReturnsPackage()
+        public async Task GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
         {
             const string testPackageName = "Test package name";
+            var request = new DefaultHttpRequest(new DefaultHttpContext());
+            var queryParams = new Dictionary<string, StringValues>()
+            {
+                {
+                    "packageName", testPackageName
+                }
+            };
+            request.Query = new QueryCollection(queryParams);
+            
 
-            var result = _packagesController.Get(testPackageName);
+            var response = (OkObjectResult) await GetPackageByName.Run(request, _logger);
 
-            Assert.IsInstanceOf<OkObjectResult>(result);
-            Assert.AreEqual(testPackageName, ((OkObjectResult)result).Value);
+            Thread.Sleep(3000);
+
+            //Assert.IsInstanceOf<OkObjectResult>(result);
+            //Assert.AreEqual(testPackageName, (result as OkObjectResult).Value);
+            Assert.AreEqual(testPackageName, response.Value);
         }
 
         [Test]
