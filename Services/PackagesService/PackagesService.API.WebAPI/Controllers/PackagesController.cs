@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 
-namespace PackagesService.API.Controllers
+namespace PackagesService.API.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
