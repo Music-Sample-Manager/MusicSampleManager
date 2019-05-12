@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.Azure.WebJobs.Host;
 using PackagesService.DAL;
 
-namespace ContributorWebsite.Backend.PackageRevisions
+namespace PackagesService.API.PackageRevisions
 {
     public static class GetPackageRevisionsByPackageId
     {
