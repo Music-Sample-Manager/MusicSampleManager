@@ -4,7 +4,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.IO.Compression;
 using Xunit;
 
-namespace Domain.Tests
+namespace DesktopClient.Domain.Tests
 {
     public class LocalProjectTests
     {

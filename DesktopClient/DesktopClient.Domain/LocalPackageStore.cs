@@ -4,7 +4,7 @@ using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Linq;
 
-namespace Domain
+namespace DesktopClient.Domain
 {
     /// <summary>
     /// Represents a store of <see cref="Package"/>s on the local filesystem.
@@ -21,6 +21,11 @@ namespace Domain
             _fileSystem = fileSystem;
             PackageProject = packageStoreProject ?? throw new ArgumentNullException(nameof(packageStoreProject));
         }
+
+        //TODO // Most of the methods in this class are details. I need to set up some boundaries.
+             // First, I need a high-level, abstract, logical domain to work with - an IPackageStore.
+             // The IPackageStore can AddPackage()s, RemovePackage()s, etc. The FileSystemPackageStore
+             // those tasks in the filesystem.
 
         public bool RootFolderExists()
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Net.Http;
-using Clients.Common.Commands;
+using DesktopClient.Domain.Commands;
 using Microsoft.Extensions.Logging;
 using PackagesService.API.Client;
 

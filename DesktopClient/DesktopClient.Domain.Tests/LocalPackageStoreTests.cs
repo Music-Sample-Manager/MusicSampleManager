@@ -6,7 +6,7 @@ using System.IO.Compression;
 using System.Linq;
 using Xunit;
 
-namespace Domain.Tests
+namespace DesktopClient.Domain.Tests
 {
     public class LocalPackageStoreTests
     {

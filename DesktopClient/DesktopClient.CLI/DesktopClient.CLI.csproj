@@ -10,11 +10,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Clients.Common\Clients.Common.csproj" />
+    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <ProjectReference Include="..\..\Services\PackagesService\PackagesService.API.Client\PackagesService.API.Client.csproj" />
+    <ProjectReference Include="..\DesktopClient.Domain\DesktopClient.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System;
 using System.IO.Abstractions;
 
-namespace Domain
+namespace DesktopClient.Domain
 {
     public class LocalProject
     {

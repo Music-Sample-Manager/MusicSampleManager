@@ -1,12 +1,11 @@
-﻿using System.IO.Abstractions;
-using Domain;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using PackagesService.API.Client;
 using PackagesService.Domain;
+using System.IO.Abstractions;
 
-namespace Clients.Common.Commands
+namespace DesktopClient.Domain.Commands
 {
-    public class InstallPackageCommand
+    class InstallPackageCommand
     {
         private readonly ILogger _logger;
         private readonly APIClient _apiClient;
