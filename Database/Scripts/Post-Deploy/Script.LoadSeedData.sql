@@ -29,13 +29,13 @@ VALUES ('LegoWelt.FreeSamples', 'A collection of free samples', (SELECT Id FROM 
 	   (@VPO, 'A free, virtual orchestra.', (SELECT Id FROM Users WHERE UserName = @PaulBattersbyAuthor))
 
 
-INSERT PackageRevisions (PackageId, VersionNumber)
-VALUES ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.0.1'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.0.2'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.1.0'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '1.0.0.0'),
+INSERT PackageRevisions (PackageId, VersionNumber, BlobReference)
+VALUES ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.0.1', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
+	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.0.2', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
+	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '0.0.1.0', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
+	   ((SELECT Id FROM Packages WHERE Identifier = @Landr), '1.0.0.0', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
 
-	   ((SELECT Id FROM Packages WHERE Identifier = @LiveSchool), '1.0.1.0'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @Ableton), '1.0.1.1'),
-	   ((SELECT Id FROM Packages WHERE Identifier = @VPO), '3.1.0.0')
+	   ((SELECT Id FROM Packages WHERE Identifier = @LiveSchool), '1.0.1.0', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
+	   ((SELECT Id FROM Packages WHERE Identifier = @Ableton), '1.0.1.1', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2'),
+	   ((SELECT Id FROM Packages WHERE Identifier = @VPO), '3.1.0.0', 'YamahaC5Piano/Yamaha-C5-Small-V1.5.sf2')
 GO
