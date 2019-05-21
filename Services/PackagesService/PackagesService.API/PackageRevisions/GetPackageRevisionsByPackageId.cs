@@ -6,15 +6,16 @@ using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Microsoft.Azure.WebJobs.Host;
 using PackagesService.DAL;
+using Microsoft.Extensions.Logging;
 
 namespace PackagesService.API.PackageRevisions
 {
     public static class GetPackageRevisionsByPackageId
     {
         [FunctionName(nameof(GetPackageRevisionsByPackageId))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, TraceWriter log)
+        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
         {
-            log.Info("C# HTTP trigger function processed a request.");
+            log.LogInformation("C# HTTP trigger function processed a request.");
 
             int packageId;
             if (!int.TryParse(req.Query["packageId"], out packageId))
