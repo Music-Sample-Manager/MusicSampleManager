@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Services\PackagesService\PackagesService.API.Client\PackagesService.API.Client.csproj" />
+    <ProjectReference Include="..\DesktopClient.DAL\DesktopClient.DAL.csproj" />
     <ProjectReference Include="..\DesktopClient.Domain\DesktopClient.Domain.csproj" />
   </ItemGroup>
 

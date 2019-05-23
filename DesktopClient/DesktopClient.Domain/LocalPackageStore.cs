@@ -1,65 +1,23 @@
 ﻿using PackagesService.Domain;
 using System;
-using System.IO.Abstractions;
-using System.IO.Compression;
-using System.Linq;
 
 namespace DesktopClient.Domain
 {
     /// <summary>
     /// Represents a store of <see cref="Package"/>s on the local filesystem.
     /// </summary>
-    public class LocalPackageStore
+    public class LocalPackageStore : IPackageStore
     {
-        public const string RootFolderName = "samplePackages";
+        private readonly IPackageStoreData _packageStoreData;
 
-        private readonly IFileSystem _fileSystem;
-        private readonly LocalProject PackageProject;
-
-        public LocalPackageStore(IFileSystem fileSystem, LocalProject packageStoreProject)
+        public LocalPackageStore(IPackageStoreData packageStoreData)
         {
-            _fileSystem = fileSystem;
-            PackageProject = packageStoreProject ?? throw new ArgumentNullException(nameof(packageStoreProject));
+            _packageStoreData = packageStoreData;
         }
 
-        //TODO // Most of the methods in this class are details. I need to set up some boundaries.
-             // First, I need a high-level, abstract, logical domain to work with - an IPackageStore.
-             // The IPackageStore can AddPackage()s, RemovePackage()s, etc. The FileSystemPackageStore
-             // those tasks in the filesystem.
-
-        public bool RootFolderExists()
+        public void Initialize()
         {
-            var allSubFolders = PackageProject.RootFolder.EnumerateDirectories().ToList();
-            var packagesFolder = allSubFolders.SingleOrDefault(sf => sf.Name == RootFolderName);
-
-            return packagesFolder != null;
-        }
-
-        public void CreateRootFolder()
-        {
-            if (RootFolderExists())
-            {
-                throw new InvalidOperationException("Can't create packages folder when it already exists.");
-            }
-            else
-            {
-                PackageProject.RootFolder.CreateSubdirectory(RootFolderName);
-            }
-        }
-
-        public string PackageRootFolder(Package package)
-        {
-            if (package == null)
-            {
-                throw new ArgumentNullException(nameof(package));
-            }
-
-            if (package.Identifier == null)
-            {
-                throw new ArgumentNullException(nameof(package.Identifier));
-            }
-
-            return $"{PackageProject.RootFolder.FullName}\\{RootFolderName}\\{package.Identifier}";
+            _packageStoreData.AddRootFolder();
         }
 
         public void AddPackage(PackageRevision packageRev)
@@ -69,10 +27,9 @@ namespace DesktopClient.Domain
                 throw new ArgumentNullException(nameof(packageRev));
             }
 
-            _fileSystem.Directory.CreateDirectory(PackageRootFolder(packageRev.Package));
-            _fileSystem.Directory.CreateDirectory(PackageProject.PackageRevisionFolder(packageRev));
-
-            packageRev.Contents.ExtractToDirectory(PackageProject.PackageRevisionFolder(packageRev));
-        }
+            _packageStoreData.AddPackageRootFolder(packageRev);
+            _packageStoreData.AddPackageRevisionFolder(packageRev);
+            _packageStoreData.ExtractPackageRevisionToFolder(packageRev);
+        }        
     }
 }

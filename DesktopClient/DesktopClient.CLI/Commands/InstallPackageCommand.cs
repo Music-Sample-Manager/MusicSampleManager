@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using DesktopClient.DAL;
+using Microsoft.Extensions.Logging;
 using PackagesService.API.Client;
 using PackagesService.Domain;
 using System.IO.Abstractions;
@@ -8,11 +9,13 @@ namespace DesktopClient.Domain.Commands
     class InstallPackageCommand
     {
         private readonly ILogger _logger;
+        private readonly IFileSystem _fileSystem;
         private readonly APIClient _apiClient;
 
-        public InstallPackageCommand(ILogger logger, APIClient apiClient)
+        public InstallPackageCommand(ILogger logger, IFileSystem fileSystem, APIClient apiClient)
         {
             _logger = logger;
+            _fileSystem = fileSystem;
             _apiClient = apiClient;
         }
 
@@ -20,20 +23,8 @@ namespace DesktopClient.Domain.Commands
         {
             VerifyPackageIsValid(targetPackageName);
 
-            _logger.LogInformation("Checking if `packages` folder exists....");
-            var fileSystem = new FileSystem();
-            var localPackageStore = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, fileSystem.Directory.GetCurrentDirectory()));
-            var packagesFolderExists = localPackageStore.RootFolderExists();
-
-            if (packagesFolderExists)
-            {
-                _logger.LogInformation("Packages folder found. Using existing folder.");
-            }
-            else
-            {
-                _logger.LogInformation("Packages folder not found. Creating new packages folder.");
-                localPackageStore.CreateRootFolder();
-            }
+            LocalPackageStore localPackageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
+            localPackageStore.Initialize();
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
             var package = _apiClient.GetLatestPackageZip(targetPackageName);

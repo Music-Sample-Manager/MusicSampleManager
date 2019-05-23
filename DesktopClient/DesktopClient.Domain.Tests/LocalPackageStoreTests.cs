@@ -1,102 +1,51 @@
-using PackagesService.Domain;
+using DesktopClient.DAL;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
-using System.IO;
+using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
-using System.IO.Compression;
-using System.Linq;
 using Xunit;
 
 namespace DesktopClient.Domain.Tests
 {
     public class LocalPackageStoreTests
     {
-        private const string MockProjectFolder = "TestData";
+        private const string MockProjectFolderName = "TestData";
+        private IDirectoryInfo MockProjectFolder => _fakeFileSystem.DirectoryInfo.FromDirectoryName(MockProjectFolderName);
         private readonly MockFileSystem _fakeFileSystem = new MockFileSystem();
+        private readonly ILogger _mockLogger = NullLogger.Instance;
 
         public LocalPackageStoreTests()
         {
-            _fakeFileSystem.AddDirectory(MockProjectFolder);
+            _fakeFileSystem.AddDirectory(MockProjectFolderName);
         }
 
         #region ctor
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootDirectoryDoesNotExistInFileSystem()
         {
-            Assert.Throws<ArgumentException>(() => new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, "SomeNonExistentDirectory")));
+            var data = new PackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new LocalPackageStore(data);
+
+            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName("SomeNonExistentDirectory"))));
         }
 
         [Fact]
-        public void Ctor_ThrowsArgumentNullException_WhenProjectIsNull()
+        public void Ctor_ThrowsArgumentNullException_WhenDataAccessIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(_fakeFileSystem, null));
+            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(null));
         }
 
         [Fact]
         public void Ctor_ThrowsArgumentNullException_WhenProjectRootPathIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, null)));
+            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(null))));
         }
 
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootPathHasInvalidFormat()
         {
-            Assert.Throws<ArgumentException>(() => new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, string.Empty)));
-        }
-        #endregion
-
-        #region PackagesFolder
-        [Fact]
-        public void RootFolderExists_ReturnsFalse_WhenPackagesFolderDoesNotExist()
-        {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            Assert.False(sut.RootFolderExists());
-        }
-
-        [Fact]
-        public void RootFolderExists_ReturnsTrue_WhenPackagesFolderExists()
-        {
-            var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(MockProjectFolder);
-            fileSystem.AddDirectory(@"TestData\samplePackages");
-
-            var sut = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, MockProjectFolder));
-
-            Assert.True(sut.RootFolderExists());
-        }
-        #endregion
-
-        #region CreateRootFolder
-        [Fact]
-        public void CreatePackagesFolder_ThrowsInvalidOperationException_WhenPackagesFolderAlreadyExists()
-        {
-            var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(MockProjectFolder);
-            fileSystem.AddDirectory($"{MockProjectFolder}\\samplePackages");
-
-            var sut = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, MockProjectFolder));
-
-            Assert.Throws<InvalidOperationException>(() => sut.CreateRootFolder());
-        }
-
-        [Fact]
-        public void CreatePackagesFolder_CreatesPackagesFolder_WhenPackagesFolderDoesNotExist()
-        {
-            var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(MockProjectFolder);
-
-            var sut = new LocalPackageStore(fileSystem, new LocalProject(fileSystem, MockProjectFolder));
-            sut.CreateRootFolder();
-
-            var projectRoot = fileSystem.DirectoryInfo.FromDirectoryName(MockProjectFolder);
-            Assert.NotNull(projectRoot);
-
-            var projectFolders = projectRoot.EnumerateDirectories();
-
-            Assert.NotNull(projectFolders);
-            Assert.Single(projectFolders);
-
-            Assert.Equal(LocalPackageStore.RootFolderName, projectFolders.First().Name);
+            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(string.Empty))));
         }
         #endregion
 
@@ -104,7 +53,7 @@ namespace DesktopClient.Domain.Tests
         [Fact]
         public void AddPackage_ThrowsArgumentNullException_WhenProvidedPackageIsNull()
         {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
+            IPackageStore sut = new LocalPackageStore(new PackageStoreData(_mockLogger, MockProjectFolder));
 
             Assert.Throws<ArgumentNullException>(() => sut.AddPackage(null));
         }
@@ -197,39 +146,6 @@ namespace DesktopClient.Domain.Tests
         //        Assert.Equal("TestFile.txt", extractedFiles.First());
         //    }
         //}
-        #endregion
-
-        #region PackageRootFolder
-        [Fact]
-        public void PackageRootFolder_ThrowsArgumentNullException_WhenPackageIsNull()
-        {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(null));
-        }
-
-        [Fact]
-        public void PackageRootFolder_ThrowsArgumentNullException_WhenPackageIdentifierIsNull()
-        {
-            var sut = new LocalPackageStore(_fakeFileSystem, new LocalProject(_fakeFileSystem, MockProjectFolder));
-
-            Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(new Package(null)));
-        }
-
-        [Fact]
-        public void PackageRootFolder_ReturnsCorrectFolderName_WhenSuccessful()
-        {
-            var rootFolder = "SomeRootFolder";
-            var mockPackage = new Package("Some.Package.Identifier.Here");
-            var mockFileSystem = new MockFileSystem();
-            mockFileSystem.AddDirectory(rootFolder);
-
-            var sut = new LocalPackageStore(mockFileSystem, new LocalProject(mockFileSystem, rootFolder));
-
-            var result = sut.PackageRootFolder(mockPackage);
-
-            Assert.Equal($"{mockFileSystem.DirectoryInfo.FromDirectoryName("SomeRootFolder").FullName}\\{LocalPackageStore.RootFolderName}\\{mockPackage.Identifier}", result);
-        }
         #endregion
     }
 }

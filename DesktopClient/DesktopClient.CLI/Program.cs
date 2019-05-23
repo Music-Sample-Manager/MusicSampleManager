@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO.Abstractions;
 using System.Net.Http;
 using DesktopClient.Domain.Commands;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace MusicSampleManager.CLI
     {
         private static ILogger _logger;
         private static APIClient _apiClient;
+        private static FileSystem _fileSystem;
 
         static void Main(string[] args)
         {
@@ -30,6 +32,7 @@ namespace MusicSampleManager.CLI
 
             // TODO This should be easily configurable for use in various environments, etc.
             _apiClient = new APIClient("https://localhost:44349", new HttpClient());
+            _fileSystem = new FileSystem();
         }
 
         private static void ParseArguments(string[] args)
@@ -43,7 +46,7 @@ namespace MusicSampleManager.CLI
             {
                 if (args[0] == "Install")
                 {
-                    var command = new InstallPackageCommand(_logger, _apiClient);
+                    var command = new InstallPackageCommand(_logger, _fileSystem, _apiClient);
                     command.Execute(args[1]);
                 }
             }
