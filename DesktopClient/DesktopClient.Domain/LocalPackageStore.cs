@@ -12,7 +12,7 @@ namespace DesktopClient.Domain
 
         public LocalPackageStore(IPackageStoreData packageStoreData)
         {
-            _packageStoreData = packageStoreData;
+            _packageStoreData = packageStoreData ?? throw new ArgumentNullException(nameof(packageStoreData));
         }
 
         public void Initialize()
