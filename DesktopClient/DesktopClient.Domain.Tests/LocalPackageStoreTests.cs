@@ -1,9 +1,12 @@
 using DesktopClient.DAL;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
+using PackagesService.Domain;
 using System;
+using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.IO.Compression;
 using Xunit;
 
 namespace DesktopClient.Domain.Tests

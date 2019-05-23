@@ -4,28 +4,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Primitives;
-using NUnit.Framework;
 using PackagesService.API.Packages;
 using PackagesService.API.WebAPI.Controllers;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace PackagesService.Tests.Controllers
 {
-    class PackagesControllerTests
+    public class PackagesControllerTests
     {
         private PackagesController _packagesController;
         private ILogger _logger;
 
-        [SetUp]
-        public void Setup()
+        public PackagesControllerTests()
         {
             _packagesController = new PackagesController();
             _logger = NullLoggerFactory.Instance.CreateLogger("Test");
         }
 
-        [Test]
+        [Fact]
         public async Task GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
         {
             const string testPackageName = "Test package name";
@@ -45,27 +44,27 @@ namespace PackagesService.Tests.Controllers
 
             //Assert.IsInstanceOf<OkObjectResult>(result);
             //Assert.AreEqual(testPackageName, (result as OkObjectResult).Value);
-            Assert.AreEqual(testPackageName, response.Value);
+            Assert.Equal(testPackageName, response.Value);
         }
 
-        [Test]
+        [Fact]
         public void Get_WhenPackageNameIsNull_Returns400()
         {
             const string testPackageName = null;
 
             var result = _packagesController.Get(testPackageName);
 
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        [Test]
+        [Fact]
         public void Get_WhenPackageNameIsEmpty_Returns400()
         {
             string testPackageName = string.Empty;
 
             var result = _packagesController.Get(testPackageName);
 
-            Assert.IsInstanceOf<BadRequestObjectResult>(result);
+            Assert.IsType<BadRequestObjectResult>(result);
         }
     }
 }

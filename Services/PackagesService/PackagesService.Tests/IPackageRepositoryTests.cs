@@ -1,8 +1,8 @@
 ﻿using Moq;
-using NUnit.Framework;
 using PackagesService.Domain;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
 namespace PackagesService.Tests
 {
@@ -10,8 +10,7 @@ namespace PackagesService.Tests
     {
         private readonly Mock<IPackageRepository> _repository = new Mock<IPackageRepository>();
 
-        [SetUp]
-        public void Setup()
+        public IPackageRepositoryTests()
         {
             _repository.Setup(r => r.GetAll()).Returns(new List<Package>
                                                        {
@@ -21,14 +20,14 @@ namespace PackagesService.Tests
                                                        });
         }
 
-        [Test]
+        [Fact]
         public void GetAll_DoesNotExplode()
         {
             var resultPackages = _repository.Object.GetAll();
 
             Assert.NotNull(resultPackages);
-            Assert.IsNotEmpty(resultPackages);
-            Assert.AreEqual(3, resultPackages.Count());
+            Assert.NotEmpty(resultPackages);
+            Assert.Equal(3, resultPackages.Count());
 
             _repository.VerifyAll();
         }
