@@ -1,14 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Internal;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Primitives;
 using PackagesService.API.Packages;
 using PackagesService.API.WebAPI.Controllers;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
+using PackagesService.DAL.Entities;
 using Xunit;
 
 namespace PackagesService.Tests.Controllers
@@ -25,26 +20,26 @@ namespace PackagesService.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
+        public async void GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
         {
             const string testPackageName = "Test package name";
-            var request = new DefaultHttpRequest(new DefaultHttpContext());
-            var queryParams = new Dictionary<string, StringValues>()
+            var dbContext = TestFactory.GetInMemoryDbContext();
+            dbContext.Packages.Add(new PackageRec
             {
-                {
-                    "packageName", testPackageName
-                }
-            };
-            request.Query = new QueryCollection(queryParams);
-            
+                Id = 1,
+                Identifier = testPackageName,
+                Description = "TestDescription",
+                AuthorId = 1
+            });
+            dbContext.SaveChanges();
+            var sut = new GetPackageByName(dbContext);
+            var request = TestFactory.CreateHttpRequest("packageName", testPackageName);
 
-            var response = (OkObjectResult) await GetPackageByName.Run(request, _logger);
+            var response = await sut.Run(request, _logger);
 
-            Thread.Sleep(3000);
-
-            //Assert.IsInstanceOf<OkObjectResult>(result);
-            //Assert.AreEqual(testPackageName, (result as OkObjectResult).Value);
-            Assert.Equal(testPackageName, response.Value);
+            Assert.IsType<OkObjectResult>(response);
+            Assert.IsType<PackageRec>((response as OkObjectResult).Value);
+            Assert.Equal(testPackageName, ((response as OkObjectResult).Value as PackageRec).Identifier);
         }
 
         [Fact]
