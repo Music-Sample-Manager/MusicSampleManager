@@ -23,7 +23,7 @@ namespace PackagesService.API.PackageRevisions
                 return new BadRequestObjectResult("Please pass a packageId in the query string");
             }
 
-            using (var dbContext = new MSMDbContext())
+            using (var dbContext = new MSMDbContext(false))
             {
                 var packageRevisions = dbContext.PackageRevisions.Where(pr => pr.PackageId == packageId).ToList();
 

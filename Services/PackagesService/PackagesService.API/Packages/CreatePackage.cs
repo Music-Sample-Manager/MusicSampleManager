@@ -2,15 +2,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
 using PackagesService.DAL;
 using PackagesService.DAL.Entities;
 
 namespace PackagesService.API.Packages
 {
-    public static class CreatePackage
+    public class CreatePackage
     {
+        private readonly MSMDbContext _dbContext;
+
+        public CreatePackage(MSMDbContext dbContext)
+        {
+            this._dbContext = dbContext;
+        }
+
         // * Store content in a Blob - make note of its ID
         // * Add metadata to relational data store, including the Blob ID
         // Data:
@@ -18,7 +24,7 @@ namespace PackagesService.API.Packages
         // * Package name
         // * Package revision
         [FunctionName(nameof(CreatePackage))]
-        public static ActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, ILogger log)
+        public ActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)]HttpRequest req, ILogger log)
         {
             string packageName = req.Query["packageName"];
             string packageDescription = req.Query["packageDescription"];
@@ -38,17 +44,14 @@ namespace PackagesService.API.Packages
             }
 
 
-            using (var dbContext = new MSMDbContext())
+            _dbContext.Packages.Add(new PackageRec()
             {
-                dbContext.Packages.Add(new PackageRec()
-                {
-                    Identifier = packageName,
-                    Description = packageDescription,
-                    AuthorId = authorId
-                });
+                Identifier = packageName,
+                Description = packageDescription,
+                AuthorId = authorId
+            });
 
-                dbContext.SaveChanges();
-            }
+            _dbContext.SaveChanges();
 
             return new OkResult();
         }
