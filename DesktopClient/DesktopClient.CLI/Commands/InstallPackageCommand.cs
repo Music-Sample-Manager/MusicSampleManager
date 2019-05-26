@@ -19,7 +19,7 @@ namespace DesktopClient.Domain.Commands
             _apiClient = apiClient;
         }
 
-        public void Execute(string targetPackageName)
+        public async void ExecuteAsync(string targetPackageName)
         {
             VerifyPackageIsValid(targetPackageName);
 
@@ -27,7 +27,7 @@ namespace DesktopClient.Domain.Commands
             localPackageStore.Initialize();
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            var package = _apiClient.GetLatestPackageZip(targetPackageName);
+            var package = await _apiClient.GetLatestPackageZip(targetPackageName);
 
             localPackageStore.AddPackage(package);
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.IO.Abstractions;
 using System.IO.Compression;
 using System.Linq;
@@ -22,6 +23,16 @@ namespace DesktopClient.DAL
 
         public PackageStoreData(ILogger logger, IDirectoryInfo rootDirectory)
         {
+            if (rootDirectory == null)
+            {
+                throw new ArgumentNullException(nameof(rootDirectory));
+            }
+
+            if (!Directory.Exists(rootDirectory.FullName))
+            {
+                throw new ArgumentException(nameof(rootDirectory));
+            }
+
             _logger = logger;
             _rootDirectory = rootDirectory;
         }

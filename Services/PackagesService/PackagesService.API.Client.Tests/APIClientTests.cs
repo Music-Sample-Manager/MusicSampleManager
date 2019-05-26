@@ -2,9 +2,13 @@
 using Moq.Protected;
 using Newtonsoft.Json;
 using PackagesService.Domain;
+using Semver;
 using System;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -95,31 +99,54 @@ namespace PackagesService.API.Client.Tests
 
         #region GetLatestPackageZipTests
         [Fact]
-        public void GetLatestPackageZipTests_ThrowsArgumentException_WhenTargetPackageNameIsEmpty()
+        public async void GetLatestPackageZipTests_ThrowsArgumentException_WhenTargetPackageNameIsEmpty()
         {
             var sut = new APIClient("https://example.com", new HttpClient());
 
-            var exception = Assert.Throws<ArgumentException>(() => sut.GetLatestPackageZip(string.Empty));
+            var exception = Assert.ThrowsAsync<ArgumentException>(() => sut.GetLatestPackageZip(string.Empty));
 
             Assert.NotNull(exception);
         }
 
         [Fact]
-        public void GetLatestPackageZipTests_ThrowsArgumentNullException_WhenTargetPackageNameIsNull()
+        public async void GetLatestPackageZipTests_ThrowsArgumentNullException_WhenTargetPackageNameIsNull()
         {
             var sut = new APIClient("https://example.com", new HttpClient());
 
-            var exception = Assert.Throws<ArgumentNullException>(() => sut.GetLatestPackageZip(null));
+            var exception = Assert.ThrowsAsync<ArgumentNullException>(() => sut.GetLatestPackageZip(null));
 
             Assert.NotNull(exception);
         }
 
         [Fact]
-        public void GetLatestPackageZipTests_Succeeds_WhenTargetPackageNameIsValid()
+        public async void GetLatestPackageZipTests_Succeeds_WhenTargetPackageNameIsValid()
         {
-            var sut = new APIClient("https://example.com", new HttpClient());
+            var responseObject = new PackageRevision(new Package("test"),
+                                                     new SemVersion(new Version("1.2.3.4")),
+                                                     new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
+            string jsonContent = JsonConvert.SerializeObject(responseObject,
+                                                             Formatting.Indented,
+                                                             new JsonSerializerSettings
+                                                             {
+                                                                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                                                             });
 
-            var result = sut.GetLatestPackageZip("SomeValidPackageName");
+            var mockResponse = new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(jsonContent)
+            };
+            var mockHttpHandler = new Mock<HttpClientHandler>();
+            mockHttpHandler
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .Returns(Task.FromResult(mockResponse));
+            var mockHttpClient = new HttpClient(mockHttpHandler.Object);
+            var sut = new APIClient("https://example.com", mockHttpClient);
+
+            var result = await sut.GetLatestPackageZip("SomeValidPackageName");
 
             Assert.NotNull(result);
             Assert.IsType<PackageRevision>(result);

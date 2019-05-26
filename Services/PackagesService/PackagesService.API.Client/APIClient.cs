@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Compression;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PackagesService.Domain;
 using Semver;
@@ -63,16 +64,17 @@ namespace PackagesService.API.Client
                                                     JsonConvert.DeserializeObject<ZipArchive>(package));
         }
 
-        public PackageRevision GetLatestPackageZip(string targetPackageName)
+        public async Task<PackageRevision> GetLatestPackageZip(string targetPackageName)
         {
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(targetPackageName);
 
             var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips/latest", $"packageName={targetPackageName}")).Result;
 
-            var packageRevision = result.Content.ReadAsStringAsync().Result;
+            var packageRevisionJson = await result.Content.ReadAsStringAsync();
+            var deserializedPackageRevision = JsonConvert.DeserializeObject<PackageRevision>(packageRevisionJson);
 
-            return (PackageRevision)((object)packageRevision);
+            return deserializedPackageRevision;
         }
 
         private bool ValidatePackageName(string packageName)

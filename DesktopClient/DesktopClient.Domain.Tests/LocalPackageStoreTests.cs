@@ -27,9 +27,6 @@ namespace DesktopClient.Domain.Tests
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootDirectoryDoesNotExistInFileSystem()
         {
-            var data = new PackageStoreData(_mockLogger, MockProjectFolder);
-            var sut = new LocalPackageStore(data);
-
             Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName("SomeNonExistentDirectory"))));
         }
 
@@ -53,14 +50,6 @@ namespace DesktopClient.Domain.Tests
         #endregion
 
         #region AddPackage
-        [Fact]
-        public void AddPackage_ThrowsArgumentNullException_WhenProvidedPackageIsNull()
-        {
-            IPackageStore sut = new LocalPackageStore(new PackageStoreData(_mockLogger, MockProjectFolder));
-
-            Assert.Throws<ArgumentNullException>(() => sut.AddPackage(null));
-        }
-
         //[Fact]
         //public void AddPackage_CreatesFolderForPackage_WhenFolderDoesNotAlreadyExist()
         //{

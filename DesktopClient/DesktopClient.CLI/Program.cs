@@ -47,7 +47,7 @@ namespace MusicSampleManager.CLI
                 if (args[0] == "Install")
                 {
                     var command = new InstallPackageCommand(_logger, _fileSystem, _apiClient);
-                    command.Execute(args[1]);
+                    command.ExecuteAsync(args[1]);
                 }
             }
 

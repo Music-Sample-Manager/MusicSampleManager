@@ -33,7 +33,7 @@ namespace DesktopClient.DAL.Tests
         }
 
         [Fact]
-        public void Ctor_ThrowsArgumentException_WhenRootFolderDoesNotExist()
+        public void Ctor_ThrowsArgumentException_WhenRootFolderDoesNotExistInFileSystem()
         {
             var fileSystem = new MockFileSystem();
 
@@ -122,7 +122,7 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void RootFolderExists_ReturnsFalse_WhenPackagesFolderDoesNotExist()
         {
-            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName("ANonExistentFolder"));
+            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(@"C:\"));
 
             Assert.False(sut.RootFolderExists());
         }
@@ -131,10 +131,11 @@ namespace DesktopClient.DAL.Tests
         public void RootFolderExists_ReturnsTrue_WhenPackagesFolderExists()
         {
             var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(MockProjectFolderName);
-            fileSystem.AddDirectory(@"TestData\samplePackages");
+            fileSystem.AddDirectory(@"C:\");
+            fileSystem.AddDirectory(@"C:\TestData");
+            fileSystem.AddDirectory(@"C:\TestData\samplePackages");
 
-            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(MockProjectFolderName));
+            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(@"C:\TestData"));
 
             Assert.True(sut.RootFolderExists());
         }
