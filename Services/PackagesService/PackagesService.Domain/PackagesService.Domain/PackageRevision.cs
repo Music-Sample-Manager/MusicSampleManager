@@ -1,4 +1,5 @@
-﻿using System.IO.Compression;
+﻿using System;
+using System.IO.Compression;
 using Semver;
 
 namespace PackagesService.Domain
@@ -13,9 +14,9 @@ namespace PackagesService.Domain
 
         public PackageRevision(Package package, SemVersion versionNumber, ZipArchive contents)
         {
-            Package = package;
-            VersionNumber = versionNumber;
-            Contents = contents;
+            Package = package ?? throw new ArgumentNullException(nameof(package));
+            VersionNumber = versionNumber ?? throw new ArgumentNullException(nameof(versionNumber));
+            Contents = contents ?? throw new ArgumentNullException(nameof(contents));
         }
     }
 }

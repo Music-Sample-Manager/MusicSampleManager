@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PackagesService.Domain
@@ -13,6 +14,16 @@ namespace PackagesService.Domain
 
         public Package(string identifier)
         {
+            if (identifier == null)
+            {
+                throw new ArgumentNullException(nameof(identifier));
+            }
+
+            if (identifier == string.Empty)
+            {
+                throw new ArgumentException("Empty package identifiers are not allowed.");
+            }
+
             Identifier = identifier;
         }
 
