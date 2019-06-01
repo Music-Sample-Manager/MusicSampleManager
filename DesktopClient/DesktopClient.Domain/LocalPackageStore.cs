@@ -1,5 +1,7 @@
 ﻿using PackagesService.Domain;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace DesktopClient.Domain
 {
@@ -9,6 +11,8 @@ namespace DesktopClient.Domain
     public class LocalPackageStore : IPackageStore
     {
         private readonly IPackageStoreData _packageStoreData;
+
+        public List<PackageStoreEntry> Entries { get; private set; } = new List<PackageStoreEntry>();
 
         public LocalPackageStore(IPackageStoreData packageStoreData)
         {
@@ -30,6 +34,15 @@ namespace DesktopClient.Domain
             _packageStoreData.AddPackageRootFolder(packageRev);
             _packageStoreData.AddPackageRevisionFolder(packageRev);
             _packageStoreData.ExtractPackageRevisionToFolder(packageRev);
-        }        
+
+            if (Entries.ToList().Exists(e => e.Package.Identifier == packageRev.Package.Identifier))
+            {
+               Entries.Single(e => e.Package.Identifier == packageRev.Package.Identifier).PackageRevisions.Add(packageRev);
+            }
+            else
+            {
+                Entries.Add(new PackageStoreEntry(packageRev.Package, new List<PackageRevision> { packageRev }));
+            }
+        }
     }
 }

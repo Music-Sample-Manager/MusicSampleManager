@@ -2,11 +2,13 @@ using DesktopClient.DAL;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using PackagesService.Domain;
+using Semver;
 using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.IO.Compression;
+using System.Linq;
 using Xunit;
 
 namespace DesktopClient.Domain.Tests
@@ -50,6 +52,50 @@ namespace DesktopClient.Domain.Tests
         #endregion
 
         #region AddPackage
+        [Fact]
+        public void AddPackage_ThrowsArgumentNullException_WhenPackageRevisionIsNull()
+        {
+            var sut = new LocalPackageStore(new MockPackageStoreData(_mockLogger, MockProjectFolder));
+
+            Assert.Throws<ArgumentNullException>(() => sut.AddPackage(null));
+        }
+
+        [Fact]
+        public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesNotExistInStore()
+        {
+            var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new LocalPackageStore(mockDAL);
+
+            Assert.Empty(sut.Entries);
+
+            sut.AddPackage(new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"), new SemVersion(0), null));
+            Assert.Single(sut.Entries);
+            Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
+        }
+
+        [Fact]
+        public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesExistInStore()
+        {
+            var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
+            var mockPackage = new Package("SamplePackage.Something.Else");
+            var mockPackageRev1 = new PackageRevision(mockPackage, new SemVersion(0, 1), null);
+            var mockPackageRev2 = new PackageRevision(mockPackage, new SemVersion(0, 2), null);
+
+            var sut = new LocalPackageStore(mockDAL);
+
+            Assert.Empty(sut.Entries);
+
+            sut.AddPackage(mockPackageRev1);
+
+            Assert.Single(sut.Entries);
+            Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
+
+            sut.AddPackage(mockPackageRev2);
+
+            Assert.Single(sut.Entries);
+            Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());
+        }
+
         //[Fact]
         //public void AddPackage_CreatesFolderForPackage_WhenFolderDoesNotAlreadyExist()
         //{

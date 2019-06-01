@@ -23,13 +23,14 @@ namespace DesktopClient.Domain.Commands
         {
             VerifyPackageIsValid(targetPackageName);
 
-            LocalPackageStore localPackageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
-            localPackageStore.Initialize();
+            // TODO Should this IPackageStore be DI'd?
+            IPackageStore packageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
+            packageStore.Initialize();
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
             var package = await _apiClient.GetLatestPackageZip(targetPackageName);
 
-            localPackageStore.AddPackage(package);
+            packageStore.AddPackage(package);
         }
 
         private void VerifyPackageIsValid(string targetPackageName)
