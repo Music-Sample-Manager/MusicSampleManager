@@ -29,7 +29,13 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void Ctor_ThrowsArgumentNullException_WhenNullRootFolderIsProvided()
         {
-            Assert.Throws<ArgumentNullException>(() => new PackageStoreData(_mockLogger, null));
+            Assert.Throws<ArgumentNullException>(() => new PackageStoreData(_mockLogger, _fakeFileSystem, null));
+        }
+
+        [Fact]
+        public void Ctor_ThrowsArgumentNullException_WhenNullFileSystemIsProvided()
+        {
+            Assert.Throws<ArgumentNullException>(() => new PackageStoreData(_mockLogger, null, MockProjectFolder));
         }
 
         [Fact]
@@ -37,7 +43,7 @@ namespace DesktopClient.DAL.Tests
         {
             var fileSystem = new MockFileSystem();
 
-            Assert.Throws<ArgumentException>(() => new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName("FakeDirectoryName")));
+            Assert.Throws<ArgumentException>(() => new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName("FakeDirectoryName")));
         }
 
         [Fact]
@@ -47,7 +53,7 @@ namespace DesktopClient.DAL.Tests
             var fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(rootFolder);
 
-            new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
+            new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
         }
         #endregion
 
@@ -55,7 +61,7 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void PackageRootFolder_ThrowsArgumentNullException_WhenPackageIsNull()
         {
-            var sut = new PackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem, MockProjectFolder);
 
             Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(null));
         }
@@ -63,7 +69,7 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void PackageRootFolder_ThrowsArgumentNullException_WhenPackageIdentifierIsNull()
         {
-            var sut = new PackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem, MockProjectFolder);
 
             Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(new Package(null)));
         }
@@ -76,7 +82,7 @@ namespace DesktopClient.DAL.Tests
             var mockFileSystem = new MockFileSystem();
             mockFileSystem.AddDirectory(rootFolder);
 
-            var sut = new PackageStoreData(_mockLogger, mockFileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
+            var sut = new PackageStoreData(_mockLogger, mockFileSystem, mockFileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
 
             var result = sut.PackageRootFolder(mockPackage);
 
@@ -92,7 +98,7 @@ namespace DesktopClient.DAL.Tests
             fileSystem.AddDirectory(MockProjectFolderName);
             fileSystem.AddDirectory($"{MockProjectFolderName}\\samplePackages");
 
-            var sut = new PackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new PackageStoreData(_mockLogger, fileSystem, MockProjectFolder);
 
             Assert.Throws<InvalidOperationException>(() => sut.CreateRootFolder());
         }
@@ -100,13 +106,14 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void CreatePackagesFolder_CreatesPackagesFolder_WhenPackagesFolderDoesNotExist()
         {
+            var containingFolderName = "TestFolder";
             var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory(MockProjectFolderName);
+            fileSystem.AddDirectory(containingFolderName);
 
-            var sut = new PackageStoreData(_mockLogger, MockProjectFolder);
+            var sut = new PackageStoreData(_mockLogger, fileSystem, MockProjectFolder);
             sut.CreateRootFolder();
 
-            var projectRoot = fileSystem.DirectoryInfo.FromDirectoryName(MockProjectFolderName);
+            var projectRoot = fileSystem.DirectoryInfo.FromDirectoryName($"{MockProjectFolderName}\\{PackageStoreData.RootFolderName}");
             Assert.NotNull(projectRoot);
 
             var projectFolders = projectRoot.EnumerateDirectories();
@@ -122,7 +129,7 @@ namespace DesktopClient.DAL.Tests
         [Fact]
         public void RootFolderExists_ReturnsFalse_WhenPackagesFolderDoesNotExist()
         {
-            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(@"C:\"));
+            var sut = new PackageStoreData(_mockLogger, _fakeFileSystem, _fakeFileSystem.DirectoryInfo.FromDirectoryName(@"C:\"));
 
             Assert.False(sut.RootFolderExists());
         }
@@ -135,7 +142,7 @@ namespace DesktopClient.DAL.Tests
             fileSystem.AddDirectory(@"C:\TestData");
             fileSystem.AddDirectory(@"C:\TestData\samplePackages");
 
-            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(@"C:\TestData"));
+            var sut = new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName(@"C:\TestData"));
 
             Assert.True(sut.RootFolderExists());
         }
@@ -148,7 +155,7 @@ namespace DesktopClient.DAL.Tests
             var rootFolder = "TestRootFolder";
             var fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(rootFolder);
-            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
+            var sut = new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
 
             Assert.Throws<ArgumentNullException>(() => sut.PackageRevisionFolder(null));
         }
@@ -162,7 +169,7 @@ namespace DesktopClient.DAL.Tests
             var rootFolder = "TestRootFolder";
             var fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(rootFolder);
-            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
+            var sut = new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
 
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
@@ -176,7 +183,7 @@ namespace DesktopClient.DAL.Tests
             var rootFolder = "TestRootFolder";
             var fileSystem = new MockFileSystem();
             fileSystem.AddDirectory(rootFolder);
-            var sut = new PackageStoreData(_mockLogger, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
+            var sut = new PackageStoreData(_mockLogger, fileSystem, fileSystem.DirectoryInfo.FromDirectoryName(rootFolder));
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
                 var mockPackageRevision = new PackageRevision(new Package("Some.Package"),

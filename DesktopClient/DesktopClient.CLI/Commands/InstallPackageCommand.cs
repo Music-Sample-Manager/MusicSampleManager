@@ -24,7 +24,7 @@ namespace DesktopClient.Domain.Commands
             VerifyPackageIsValid(targetPackageName);
 
             // TODO Should this IPackageStore be DI'd?
-            IPackageStore packageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
+            IPackageStore packageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
             packageStore.Initialize();
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);

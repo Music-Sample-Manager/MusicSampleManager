@@ -12,6 +12,7 @@ namespace DesktopClient.DAL
     public class PackageStoreData : IPackageStoreData
     {
         private readonly ILogger _logger;
+        private readonly IFileSystem _fileSystem;
 
         public const string RootFolderName = "samplePackages";
 
@@ -21,19 +22,25 @@ namespace DesktopClient.DAL
             get => _rootDirectory;
         }
 
-        public PackageStoreData(ILogger logger, IDirectoryInfo rootDirectory)
+        public PackageStoreData(ILogger logger, IFileSystem fileSystem, IDirectoryInfo rootDirectory)
         {
             if (rootDirectory == null)
             {
                 throw new ArgumentNullException(nameof(rootDirectory));
             }
 
-            if (!Directory.Exists(rootDirectory.FullName))
+            if (fileSystem == null)
+            {
+                throw new ArgumentNullException(nameof(fileSystem));
+            }
+
+            if (!fileSystem.Directory.Exists(rootDirectory.FullName))
             {
                 throw new ArgumentException(nameof(rootDirectory));
             }
 
             _logger = logger;
+            _fileSystem = fileSystem;
             _rootDirectory = rootDirectory;
         }
 

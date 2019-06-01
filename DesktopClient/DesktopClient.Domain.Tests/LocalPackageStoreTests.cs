@@ -29,7 +29,7 @@ namespace DesktopClient.Domain.Tests
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootDirectoryDoesNotExistInFileSystem()
         {
-            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName("SomeNonExistentDirectory"))));
+            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem, _fakeFileSystem.DirectoryInfo.FromDirectoryName("SomeNonExistentDirectory"))));
         }
 
         [Fact]
@@ -41,13 +41,13 @@ namespace DesktopClient.Domain.Tests
         [Fact]
         public void Ctor_ThrowsArgumentNullException_WhenProjectRootPathIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(null))));
+            Assert.Throws<ArgumentNullException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem, _fakeFileSystem.DirectoryInfo.FromDirectoryName(null))));
         }
 
         [Fact]
         public void Ctor_ThrowsArgumentException_WhenProjectRootPathHasInvalidFormat()
         {
-            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem.DirectoryInfo.FromDirectoryName(string.Empty))));
+            Assert.Throws<ArgumentException>(() => new LocalPackageStore(new PackageStoreData(_mockLogger, _fakeFileSystem, _fakeFileSystem.DirectoryInfo.FromDirectoryName(string.Empty))));
         }
         #endregion
 
@@ -97,6 +97,7 @@ namespace DesktopClient.Domain.Tests
         }
 
         //[Fact]
+        //TODO These are DAL-layer tests. They need to be moved to a DAL-testing project.
         //public void AddPackage_CreatesFolderForPackage_WhenFolderDoesNotAlreadyExist()
         //{
         //    using (var zip = new MemoryStream(Properties.Resources.mockZip))
