@@ -22,7 +22,7 @@ namespace DesktopClient.Domain.Tests
         {
         }
 
-        public void AddPackageRootFolder(PackageRevision packageRev)
+        public void AddPackageFolder(Package package)
         {
         }
 

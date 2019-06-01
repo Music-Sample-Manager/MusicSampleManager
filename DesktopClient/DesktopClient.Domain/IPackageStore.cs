@@ -7,8 +7,6 @@ namespace DesktopClient.Domain
     {
         List<PackageStoreEntry> Entries { get; }
 
-        void Initialize();
-
         void AddPackage(PackageRevision packageRev);
     }
 }

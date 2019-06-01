@@ -25,7 +25,6 @@ namespace DesktopClient.Domain.Commands
 
             // TODO Should this IPackageStore be DI'd?
             IPackageStore packageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
-            packageStore.Initialize();
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
             var package = await _apiClient.GetLatestPackageZip(targetPackageName);

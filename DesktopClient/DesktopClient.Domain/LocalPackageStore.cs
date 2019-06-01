@@ -19,11 +19,6 @@ namespace DesktopClient.Domain
             _packageStoreData = packageStoreData ?? throw new ArgumentNullException(nameof(packageStoreData));
         }
 
-        public void Initialize()
-        {
-            _packageStoreData.AddRootFolder();
-        }
-
         public void AddPackage(PackageRevision packageRev)
         {
             if (packageRev == null)
@@ -31,7 +26,7 @@ namespace DesktopClient.Domain
                 throw new ArgumentNullException(nameof(packageRev));
             }
 
-            _packageStoreData.AddPackageRootFolder(packageRev);
+            _packageStoreData.AddPackageFolder(packageRev.Package);
             _packageStoreData.AddPackageRevisionFolder(packageRev);
             _packageStoreData.ExtractPackageRevisionToFolder(packageRev);
 

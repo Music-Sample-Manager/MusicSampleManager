@@ -7,8 +7,7 @@ namespace DesktopClient.Domain
     {
         IDirectoryInfo RootDirectory { get; }
 
-        void AddRootFolder();
-        void AddPackageRootFolder(PackageRevision packageRev);
+        void AddPackageFolder(Package package);
         void AddPackageRevisionFolder(PackageRevision packageRev);
         void ExtractPackageRevisionToFolder(PackageRevision packageRev);
     }
