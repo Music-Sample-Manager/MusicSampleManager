@@ -1,4 +1,5 @@
 using DesktopClient.DAL;
+using DesktopClient.Domain.Tests.Properties;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using PackagesService.Domain;
@@ -68,9 +69,17 @@ namespace DesktopClient.Domain.Tests
 
             Assert.Empty(sut.Entries);
 
-            sut.AddPackage(new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"), new SemVersion(0), null));
-            Assert.Single(sut.Entries);
-            Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
+            using (var zipStream = new MemoryStream(Resources.mockZip))
+            {
+                var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
+                                                              new SemVersion(0),
+                                                              new ZipArchive(zipStream));
+
+                sut.AddPackage(mockPackageRevision);
+
+                Assert.Single(sut.Entries);
+                Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
+            }
         }
 
         [Fact]
@@ -78,22 +87,27 @@ namespace DesktopClient.Domain.Tests
         {
             var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
             var mockPackage = new Package("SamplePackage.Something.Else");
-            var mockPackageRev1 = new PackageRevision(mockPackage, new SemVersion(0, 1), null);
-            var mockPackageRev2 = new PackageRevision(mockPackage, new SemVersion(0, 2), null);
 
-            var sut = new LocalPackageStore(mockDAL);
+            using (var zipStream = new MemoryStream(Resources.mockZip))
+            {
 
-            Assert.Empty(sut.Entries);
+                var mockPackageRev1 = new PackageRevision(mockPackage, new SemVersion(0, 1), new ZipArchive(zipStream));
+                var mockPackageRev2 = new PackageRevision(mockPackage, new SemVersion(0, 2), new ZipArchive(zipStream));
 
-            sut.AddPackage(mockPackageRev1);
+                var sut = new LocalPackageStore(mockDAL);
 
-            Assert.Single(sut.Entries);
-            Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
+                Assert.Empty(sut.Entries);
 
-            sut.AddPackage(mockPackageRev2);
+                sut.AddPackage(mockPackageRev1);
 
-            Assert.Single(sut.Entries);
-            Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());
+                Assert.Single(sut.Entries);
+                Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
+
+                sut.AddPackage(mockPackageRev2);
+
+                Assert.Single(sut.Entries);
+                Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());
+            }
         }
 
         //[Fact]
