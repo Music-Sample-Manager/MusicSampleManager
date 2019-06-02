@@ -7,14 +7,16 @@ namespace PackagesService.DAL
     public class MSMDbContext : DbContext
     {
         private readonly bool _isInMemoryTestingContext;
+        private readonly string _connectionString;
 
         public DbSet<PackageRec> Packages { get; set; }
 
         public DbSet<PackageRevisionRec> PackageRevisions { get; set; }
 
-        public MSMDbContext(bool isInMemoryTestingContext)
+        public MSMDbContext(bool isInMemoryTestingContext, string connectionString = null)
         {
             _isInMemoryTestingContext = isInMemoryTestingContext;
+            _connectionString = connectionString;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,8 +35,7 @@ namespace PackagesService.DAL
             }
             else
             {
-                var connString = Environment.GetEnvironmentVariable("DatabaseConnectionString");
-                optionsBuilder.UseSqlServer(connString);
+                optionsBuilder.UseSqlServer(_connectionString);
             }
         }
     }

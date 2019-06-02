@@ -8,10 +8,18 @@ using Microsoft.Extensions.Logging;
 
 namespace PackagesService.API.PackageRevisions
 {
-    public static class GetPackageRevisionsByPackageId
+    public class GetPackageRevisionsByPackageId
     {
+        private readonly MSMDbContext _dbContext;
+
+        public GetPackageRevisionsByPackageId(MSMDbContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
+
+
         [FunctionName(nameof(GetPackageRevisionsByPackageId))]
-        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+        public IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -21,12 +29,9 @@ namespace PackagesService.API.PackageRevisions
                 return new BadRequestObjectResult("Please pass a packageId in the query string");
             }
 
-            using (var dbContext = new MSMDbContext(false))
-            {
-                var packageRevisions = dbContext.PackageRevisions.Where(pr => pr.PackageId == packageId).ToList();
+            var packageRevisions = _dbContext.PackageRevisions.Where(pr => pr.PackageId == packageId).ToList();
 
-                return new OkObjectResult(packageRevisions);
-            }
+            return new OkObjectResult(packageRevisions);
         }
     }
 }
