@@ -53,9 +53,8 @@ namespace PackagesService.API.Client
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(packageName);
 
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}")).Result;
-
-            var package = result.Content.ReadAsStringAsync().Result;
+            var response = await _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}"));
+            var package = await response.Content.ReadAsStringAsync();
 
             return new PackageRevision(new Package(packageName),
                                        packageVersion,

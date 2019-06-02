@@ -1,10 +1,8 @@
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
-using Microsoft.Azure.WebJobs.Host;
 using PackagesService.DAL;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +11,7 @@ namespace PackagesService.API.PackageRevisions
     public static class GetPackageRevisionsByPackageId
     {
         [FunctionName(nameof(GetPackageRevisionsByPackageId))]
-        public static async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 

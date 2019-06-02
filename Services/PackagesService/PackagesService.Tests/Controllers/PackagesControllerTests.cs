@@ -20,7 +20,7 @@ namespace PackagesService.Tests.Controllers
         }
 
         [Fact]
-        public async void GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
+        public void GetPackageByName_WhenValidPackageNameIsProvided_ReturnsPackage()
         {
             const string testPackageName = "Test package name";
             var dbContext = TestFactory.GetInMemoryDbContext();
@@ -35,7 +35,7 @@ namespace PackagesService.Tests.Controllers
             var sut = new GetPackageByName(dbContext);
             var request = TestFactory.CreateHttpRequest("packageName", testPackageName);
 
-            var response = await sut.Run(request, _logger);
+            var response = sut.Run(request, _logger);
 
             Assert.IsType<OkObjectResult>(response);
             Assert.IsType<PackageRec>((response as OkObjectResult).Value);
