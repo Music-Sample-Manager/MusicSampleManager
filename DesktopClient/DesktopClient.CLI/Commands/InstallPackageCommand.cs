@@ -27,9 +27,10 @@ namespace DesktopClient.Domain.Commands
             IPackageStore packageStore = new LocalPackageStore(new PackageStoreData(_logger, _fileSystem, _fileSystem.DirectoryInfo.FromDirectoryName("/")));
 
             _logger.LogInformation(">>>>> Installing package <{TargetPackage}>... <<<<<", targetPackageName);
-            var package = await _apiClient.GetLatestPackageZip(targetPackageName);
+            var latestPackageVersion = await _apiClient.GetLatestPackageRevision(targetPackageName);
+            var packageRevision = await _apiClient.GetPackageRevision(targetPackageName, latestPackageVersion);
 
-            packageStore.AddPackage(package);
+            packageStore.AddPackageRevision(packageRevision);
         }
 
         private void VerifyPackageIsValid(string targetPackageName)

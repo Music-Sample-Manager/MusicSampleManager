@@ -7,6 +7,6 @@ namespace DesktopClient.Domain
     {
         List<PackageStoreEntry> Entries { get; }
 
-        void AddPackage(PackageRevision packageRev);
+        void AddPackageRevision(PackageRevision packageRev);
     }
 }

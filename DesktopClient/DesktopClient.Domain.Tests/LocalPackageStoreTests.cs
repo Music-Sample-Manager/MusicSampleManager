@@ -58,7 +58,7 @@ namespace DesktopClient.Domain.Tests
         {
             var sut = new LocalPackageStore(new MockPackageStoreData(_mockLogger, MockProjectFolder));
 
-            Assert.Throws<ArgumentNullException>(() => sut.AddPackage(null));
+            Assert.Throws<ArgumentNullException>(() => sut.AddPackageRevision(null));
         }
 
         [Fact]
@@ -75,7 +75,7 @@ namespace DesktopClient.Domain.Tests
                                                               new SemVersion(0),
                                                               new ZipArchive(zipStream));
 
-                sut.AddPackage(mockPackageRevision);
+                sut.AddPackageRevision(mockPackageRevision);
 
                 Assert.Single(sut.Entries);
                 Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
@@ -98,12 +98,12 @@ namespace DesktopClient.Domain.Tests
 
                 Assert.Empty(sut.Entries);
 
-                sut.AddPackage(mockPackageRev1);
+                sut.AddPackageRevision(mockPackageRev1);
 
                 Assert.Single(sut.Entries);
                 Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
 
-                sut.AddPackage(mockPackageRev2);
+                sut.AddPackageRevision(mockPackageRev2);
 
                 Assert.Single(sut.Entries);
                 Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());

@@ -19,7 +19,7 @@ namespace DesktopClient.Domain
             _packageStoreData = packageStoreData ?? throw new ArgumentNullException(nameof(packageStoreData));
         }
 
-        public void AddPackage(PackageRevision packageRev)
+        public void AddPackageRevision(PackageRevision packageRev)
         {
             if (packageRev == null)
             {

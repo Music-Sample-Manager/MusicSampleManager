@@ -38,7 +38,7 @@ namespace PackagesService.API.Client
                 {
                     package = JsonConvert.DeserializeObject<Package>(resultPackage);
                 }
-                return true;                
+                return true;
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace PackagesService.API.Client
             }
         }
 
-        public PackageRevision DownloadPackage(string packageName, SemVersion packageVersion)
+        public async Task<PackageRevision> GetPackageRevision(string packageName, SemVersion packageVersion)
         {
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(packageName);
@@ -64,17 +64,25 @@ namespace PackagesService.API.Client
                                                     JsonConvert.DeserializeObject<ZipArchive>(package));
         }
 
-        public async Task<PackageRevision> GetLatestPackageZip(string targetPackageName)
+        public async Task<SemVersion> GetLatestPackageRevision(string packageName)
+        {
+            var latestPackageRevisionVersion = await _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packages/latest", $"packageName={packageName}"));
+
+            var latestVersion = await latestPackageRevisionVersion.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<SemVersion>(latestVersion);
+        }
+
+        public async Task<ZipArchive> GetLatestPackageZip(string targetPackageName)
         {
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(targetPackageName);
 
-            var result = _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips/latest", $"packageName={targetPackageName}")).Result;
+            var latestVersion = await GetLatestPackageRevision(targetPackageName);
+            var result = await GetPackageRevision(targetPackageName, latestVersion);
 
-            var packageRevisionJson = await result.Content.ReadAsStringAsync();
-            var deserializedPackageRevision = JsonConvert.DeserializeObject<PackageRevision>(packageRevisionJson);
-
-            return deserializedPackageRevision;
+            throw new NotImplementedException("Just did a lot of refactoring to get this to work. Need to add in some tests, etc.");
+            return result.Contents;
         }
 
         private bool ValidatePackageName(string packageName)
