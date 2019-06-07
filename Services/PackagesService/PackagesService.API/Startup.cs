@@ -10,12 +10,12 @@ namespace PackagesService.API
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DatabaseConnectionString");
+            //var connectionString = Environment.GetEnvironmentVariable("DatabaseConnectionString");
 
-            builder.Services.AddTransient((s) =>
-            {
-                return new MSMDbContext(false, connectionString);
-            });
+            //builder.Services.AddTransient((s) =>
+            //{
+            //    return new MSMDbContext(false, connectionString);
+            //});
         }
     }
 }

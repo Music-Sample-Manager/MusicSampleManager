@@ -9,7 +9,7 @@
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.28" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PackagesService.DAL\PackagesService.DAL.csproj" />
+    <ProjectReference Include="..\PackagesService.UseCases\PackagesService.UseCases.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

@@ -3,20 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using PackagesService.DAL;
-using PackagesService.DAL.Entities;
+using PackagesService.UseCases;
 
 namespace PackagesService.API.Packages
 {
     public class CreatePackage
     {
-        private readonly MSMDbContext _dbContext;
-
-        public CreatePackage(MSMDbContext dbContext)
-        {
-            this._dbContext = dbContext;
-        }
-
         // * Store content in a Blob - make note of its ID
         // * Add metadata to relational data store, including the Blob ID
         // Data:
@@ -43,15 +35,9 @@ namespace PackagesService.API.Packages
                 return new BadRequestObjectResult("Please pass an authorId in the query string");
             }
 
-
-            _dbContext.Packages.Add(new PackageRec()
-            {
-                Identifier = packageName,
-                Description = packageDescription,
-                AuthorId = authorId
-            });
-
-            _dbContext.SaveChanges();
+            // TODO DI this object(?)
+            var addPackageToRepository = new AddPackageToRepository(packageName, packageDescription, authorId);
+            addPackageToRepository.Execute();            
 
             return new OkResult();
         }
