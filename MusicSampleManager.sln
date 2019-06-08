@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PackagesService.Domain.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackagesService.UseCases", "Services\PackagesService\PackagesService.UseCases\PackagesService.UseCases.csproj", "{04FE5DF2-B777-49AF-B667-8CFA34A7E0BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PackagesService.API.Tests", "Services\PackagesService\PackagesService.API.Tests\PackagesService.API.Tests.csproj", "{D5451A3A-6005-41B0-9E22-C25392E21EBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +131,10 @@ Global
 		{04FE5DF2-B777-49AF-B667-8CFA34A7E0BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{04FE5DF2-B777-49AF-B667-8CFA34A7E0BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{04FE5DF2-B777-49AF-B667-8CFA34A7E0BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5451A3A-6005-41B0-9E22-C25392E21EBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5451A3A-6005-41B0-9E22-C25392E21EBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5451A3A-6005-41B0-9E22-C25392E21EBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5451A3A-6005-41B0-9E22-C25392E21EBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -153,6 +159,7 @@ Global
 		{6B24168F-1B55-473C-9041-BDE724E10031} = {3AC061F1-48A5-41CE-831E-7F8960A3C9BC}
 		{7BC6D76A-1B0A-4516-A828-2FAF0D25BD88} = {E7425081-5338-4A60-BB13-A73F4527D4A9}
 		{04FE5DF2-B777-49AF-B667-8CFA34A7E0BA} = {E7425081-5338-4A60-BB13-A73F4527D4A9}
+		{D5451A3A-6005-41B0-9E22-C25392E21EBE} = {E7425081-5338-4A60-BB13-A73F4527D4A9}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B97BB62A-0F9D-449B-91A8-A52D9582099A}

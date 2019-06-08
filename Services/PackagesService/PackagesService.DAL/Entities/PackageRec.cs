@@ -19,6 +19,6 @@ namespace PackagesService.DAL.Entities
         public int AuthorId { get; set; }
 
 
-        public Package ToPackage => new Package(Identifier);
+        public Package ToPackage => new Package(Identifier, Description, AuthorId);
     }
 }

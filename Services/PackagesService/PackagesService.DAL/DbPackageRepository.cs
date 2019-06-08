@@ -40,6 +40,20 @@ namespace PackagesService.DAL
             return package.AllVersions.Last();
         }
 
+        public void Add(Package package)
+        {
+            var packageRecord = new PackageRec()
+            {
+                AuthorId = package.AuthorId,
+                Id = package.Id,
+                Identifier = package.Identifier,
+                Description = package.Description
+            };
+
+            Packages.Add(packageRecord);
+            SaveChanges();
+        }
+
         public DbPackageRepository(DbContextOptions<DbPackageRepository> options) : base(options) { }
     }
 }

@@ -14,9 +14,9 @@ namespace PackagesService.Tests
         {
             _repository.Setup(r => r.GetAll()).Returns(new List<Package>
                                                        {
-                                                           new Package("Test package #1"),
-                                                           new Package("Test package #2"),
-                                                           new Package("Test package #3"),
+                                                           new Package("Test package #1", string.Empty, 0),
+                                                           new Package("Test package #2", string.Empty, 0),
+                                                           new Package("Test package #3", string.Empty, 0),
                                                        });
         }
 

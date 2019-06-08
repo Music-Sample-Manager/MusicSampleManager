@@ -34,7 +34,7 @@ namespace PackagesService.API.Client.Tests
                .ReturnsAsync(new HttpResponseMessage()
                {
                    StatusCode = HttpStatusCode.OK,
-                   Content = new StringContent(JsonConvert.SerializeObject(new Package("TestPackageName")))
+                   Content = new StringContent(JsonConvert.SerializeObject(new Package("TestPackageName", string.Empty, 0)))
                })
                .Verifiable();
             var sut = new APIClient("https://example.com", new HttpClient(handlerMock.Object));

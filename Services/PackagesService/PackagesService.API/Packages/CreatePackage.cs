@@ -3,12 +3,20 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using PackagesService.Domain;
 using PackagesService.UseCases;
 
 namespace PackagesService.API.Packages
 {
     public class CreatePackage
     {
+        private readonly IPackageRepository _packageRepository;
+
+        public CreatePackage(IPackageRepository packageRepository)
+        {
+            _packageRepository = packageRepository;
+        }
+
         // * Store content in a Blob - make note of its ID
         // * Add metadata to relational data store, including the Blob ID
         // Data:
@@ -33,10 +41,9 @@ namespace PackagesService.API.Packages
             if (authorId <= 0)
             {
                 return new BadRequestObjectResult("Please pass an authorId in the query string");
-            }
+            }            
 
-            // TODO DI this object(?)
-            var addPackageToRepository = new AddPackageToRepository(packageName, packageDescription, authorId);
+            var addPackageToRepository = new AddPackageToRepository(_packageRepository, packageName, packageDescription, authorId);
             addPackageToRepository.Execute();            
 
             return new OkResult();

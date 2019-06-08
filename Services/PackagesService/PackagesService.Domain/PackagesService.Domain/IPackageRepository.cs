@@ -9,5 +9,7 @@ namespace PackagesService.Domain
         Package FindByName(string packageName);
 
         PackageRevision FindLatestRevisionByPackageName(string packageName);
+
+        void Add(Package package);
     }
 }

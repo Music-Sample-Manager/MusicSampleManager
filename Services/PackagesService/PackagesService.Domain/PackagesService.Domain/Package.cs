@@ -10,9 +10,14 @@ namespace PackagesService.Domain
 
         public readonly string Identifier;
 
+        public readonly string Description;
+
+        // TODO Need to replace this with some type of hydrated User/Author object.
+        public readonly int AuthorId;
+
         public virtual IEnumerable<PackageRevision> AllVersions { get; private set; }
 
-        public Package(string identifier)
+        public Package(string identifier, string description, int authorId)
         {
             if (identifier == null)
             {
@@ -25,6 +30,8 @@ namespace PackagesService.Domain
             }
 
             Identifier = identifier;
+            Description = description;
+            AuthorId = authorId;
         }
 
         public PackageRevision LatestVersion()
