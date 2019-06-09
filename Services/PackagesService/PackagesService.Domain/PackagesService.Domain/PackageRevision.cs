@@ -18,5 +18,10 @@ namespace PackagesService.Domain
             VersionNumber = versionNumber ?? throw new ArgumentNullException(nameof(versionNumber));
             Contents = contents ?? throw new ArgumentNullException(nameof(contents));
         }
+
+        public Uri ContentsUri()
+        {
+            return new Uri($"https://msmpackagedbsa.blob.core.windows.net/all-packages/" + Package.Identifier + "/" + VersionNumber.ToString() + ".sf2");
+        }
     }
 }

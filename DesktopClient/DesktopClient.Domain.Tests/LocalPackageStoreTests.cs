@@ -71,7 +71,7 @@ namespace DesktopClient.Domain.Tests
 
             using (var zipStream = new MemoryStream(Resources.mockZip))
             {
-                var mockPackageRevision = new PackageRevision(new Package("MSMSamplePackages.SampleOne.PackA"),
+                var mockPackageRevision = new PackageRevision(new Package(0, "MSMSamplePackages.SampleOne.PackA", string.Empty, 0),
                                                               new SemVersion(0),
                                                               new ZipArchive(zipStream));
 
@@ -86,7 +86,7 @@ namespace DesktopClient.Domain.Tests
         public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesExistInStore()
         {
             var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
-            var mockPackage = new Package("SamplePackage.Something.Else");
+            var mockPackage = new Package(0, "SamplePackage.Something.Else", string.Empty, 0);
 
             using (var zipStream = new MemoryStream(Resources.mockZip))
             {

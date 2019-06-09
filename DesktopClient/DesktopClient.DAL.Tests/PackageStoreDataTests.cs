@@ -71,14 +71,14 @@ namespace DesktopClient.DAL.Tests
         {
             var sut = new PackageStoreData(_mockLogger, _fakeFileSystem, MockProjectFolder);
 
-            Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(new Package(null)));
+            Assert.Throws<ArgumentNullException>(() => sut.PackageRootFolder(new Package(0, null, string.Empty, 0)));
         }
 
         [Fact]
         public void PackageRootFolder_ReturnsCorrectFolderName_WhenSuccessful()
         {
             var rootFolder = "SomeRootFolder";
-            var mockPackage = new Package("Some.Package.Identifier.Here");
+            var mockPackage = new Package(0, "Some.Package.Identifier.Here", string.Empty, 0);
             var mockFileSystem = new MockFileSystem();
             mockFileSystem.AddDirectory(rootFolder);
 
@@ -135,7 +135,7 @@ namespace DesktopClient.DAL.Tests
             var sut = new PackageStoreData(_mockLogger, fileSystem, rootDirectory);
             using (var zip = new MemoryStream(Properties.Resources.mockZip))
             {
-                var mockPackageRevision = new PackageRevision(new Package("Some.Package"),
+                var mockPackageRevision = new PackageRevision(new Package(0, "Some.Package", string.Empty, 0),
                                                               new SemVersion(new Version("3.4.5")),
                                                               new ZipArchive(zip));
 
