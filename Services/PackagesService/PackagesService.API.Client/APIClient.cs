@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.IO.Compression;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -53,14 +53,16 @@ namespace PackagesService.API.Client
             // TODO If this fails we should bubble that up to the UI somehow.
             ValidatePackageName(packageName);
 
-            var response = await _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}"));
-            var package = await response.Content.ReadAsStringAsync();
+            var packageZipResponse = await _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}"));
+            var packageZip = await packageZipResponse.Content.ReadAsStringAsync();
 
-            return new PackageRevision(new Package(packageName),
+            var refactoredPackageZipResponse = await _httpClient.GetAsync(UriBuilder.BuildUri(_apiBaseUrl, "api/packageZips", $"packageName={packageName}"));
+
+            return new PackageRevision(new Package(0, packageName, string.Empty, 0),
                                        packageVersion,
-                                       string.IsNullOrEmpty(package) ?
+                                       string.IsNullOrEmpty(packageZip) ?
                                                     default(ZipArchive) :
-                                                    JsonConvert.DeserializeObject<ZipArchive>(package));
+                                                    JsonConvert.DeserializeObject<ZipArchive>(packageZip));
         }
 
         public async Task<SemVersion> GetLatestPackageRevision(string packageName)

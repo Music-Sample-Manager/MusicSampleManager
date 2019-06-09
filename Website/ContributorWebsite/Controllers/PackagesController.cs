@@ -10,12 +10,10 @@ namespace PublicWebsite
     public class PackagesController : ControllerBase
     {
         private readonly APIClient.APIClient _apiClient;
-        private readonly IPackageRepository _packageRepository;
 
-        public PackagesController(APIClient.APIClient apiClient, IPackageRepository packageRepostiory)
+        public PackagesController(APIClient.APIClient apiClient)
         {
             _apiClient = apiClient;
-            _packageRepository = packageRepostiory;
         }
 
         [HttpPost("Create")]
@@ -53,7 +51,7 @@ namespace PublicWebsite
                 throw new ArgumentException();
             }
 
-            return _packageRepository.FindByName(packageName);
+            return null; // _packageRepository.FindByName(packageName);
         }
     }
 }

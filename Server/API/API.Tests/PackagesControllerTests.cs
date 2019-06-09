@@ -1,5 +1,3 @@
-using Moq;
-using PackagesService.Domain;
 using PublicWebsite;
 using PublicWebsite.APIClient;
 using System;
@@ -15,8 +13,7 @@ namespace API.Tests
         [Fact]
         public void Get_WithEmptyPackageName_Throws()
         {
-            var packageRepo = new Mock<IPackageRepository>();
-            var sut = new PackagesController(client, packageRepo.Object);
+            var sut = new PackagesController(client);
 
             ArgumentException ex = Assert.Throws<ArgumentException>(() => sut.Get(string.Empty));
 
@@ -26,11 +23,9 @@ namespace API.Tests
         [Fact]
         public void Get_WithNullPackageName_Throws()
         {
-            var packageRepo = new Mock<IPackageRepository>();
-            var sut = new PackagesController(client, packageRepo.Object);
+            var sut = new PackagesController(client);
 
             Assert.Throws<ArgumentNullException>(() => sut.Get(null));
-            packageRepo.VerifyAll();
         }
     }
 }
