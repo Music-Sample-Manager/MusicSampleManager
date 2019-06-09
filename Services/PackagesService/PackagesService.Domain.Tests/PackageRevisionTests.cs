@@ -57,23 +57,23 @@ namespace PackagesService.Domain.Tests
                          uri.AbsoluteUri);
         }
 
-        [Fact]
-        public void LogicToRedirectRequestsToBlobStorage_IsImplemented()
-        {
-            throw new NotImplementedException("Need to do this! So that the system actually downloads the soundfont file.");
-        }
+        //[Fact]
+        //public void LogicToRedirectRequestsToBlobStorage_IsImplemented()
+        //{
+        //    throw new NotImplementedException("Need to do this! So that the system actually downloads the soundfont file.");
+        //}
 
-        [Fact]
-        public void ContentsUri_ShouldBeMovedToDAL()
-        {
-            throw new NotImplementedException("The file URI is a detail. Need to get it out of the domain layer.");
-        }
+        //[Fact]
+        //public void ContentsUri_ShouldBeMovedToDAL()
+        //{
+        //    throw new NotImplementedException("The file URI is a detail. Need to get it out of the domain layer.");
+        //}
 
-        [Fact]
-        public void AlsoInTheMiddleOfRefactoringToCleanArchitecture()
-        {
-            throw new NotImplementedException("Currently working on converting 'CreatePackage' into a fully Clean spike of functionality. The dependencies should all point in the correct direction there now. Just need to finish wiring it up.");
-        }
+        //[Fact]
+        //public void AlsoInTheMiddleOfRefactoringToCleanArchitecture()
+        //{
+        //    throw new NotImplementedException("Currently working on converting 'CreatePackage' into a fully Clean spike of functionality. The dependencies should all point in the correct direction there now. Just need to finish wiring it up.");
+        //}
         #endregion
     }
 }
