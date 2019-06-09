@@ -17,7 +17,7 @@ namespace PackagesService.Domain
 
         public virtual IEnumerable<PackageRevision> AllVersions { get; private set; }
 
-        public Package(string identifier, string description, int authorId)
+        public Package(int id, string identifier, string description, int authorId)
         {
             if (identifier == null)
             {
@@ -29,6 +29,7 @@ namespace PackagesService.Domain
                 throw new ArgumentException("Empty package identifiers are not allowed.");
             }
 
+            Id = id;
             Identifier = identifier;
             Description = description;
             AuthorId = authorId;

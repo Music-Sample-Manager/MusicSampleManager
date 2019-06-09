@@ -18,13 +18,13 @@ namespace PackagesService.Domain.Tests
         [Fact]
         public void Ctor_ThrowsArgumentNullException_WhenVersionNumberParameterIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new PackageRevision(new Package("Test.Package", string.Empty, 0), null, new ZipArchive(null)));
+            Assert.Throws<ArgumentNullException>(() => new PackageRevision(new Package(0, "Test.Package", string.Empty, 0), null, new ZipArchive(null)));
         }
 
         [Fact]
         public void Ctor_ThrowsArgumentNullException_WhenContentsParameterIsNull()
         {
-            Assert.Throws<ArgumentNullException>(() => new PackageRevision(new Package("Test.Package", string.Empty, 0), new SemVersion(0), null));
+            Assert.Throws<ArgumentNullException>(() => new PackageRevision(new Package(0, "Test.Package", string.Empty, 0), new SemVersion(0), null));
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace PackagesService.Domain.Tests
         [Fact]
         public void Ctor_Succeeds_WhenAllParametersAreValid()
         {
-            var sut = new PackageRevision(new Package("Test.Package", string.Empty, 0), new SemVersion(0), new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
+            var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0), new SemVersion(0), new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
 
             Assert.NotNull(sut);
         }
@@ -46,7 +46,7 @@ namespace PackagesService.Domain.Tests
         [Fact]
         public void ContentsUri_ReturnsCorrectValue_WhenPackageRevisionObjectIsValid()
         {
-            var sut = new PackageRevision(new Package("Test.Package", string.Empty, 0),
+            var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0),
                                           new SemVersion(1, 2, 3),
                                           new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
 

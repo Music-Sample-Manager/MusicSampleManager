@@ -21,9 +21,9 @@ namespace ContributorWebsite.Pages
         {
             int dummyAuthorId = 1;
 
-            var packages = _apiClient.GetPackagesByAuthorId(dummyAuthorId);
+            var packages = await _apiClient.GetPackagesByAuthorId(dummyAuthorId);
 
-            Packages = await packages;
+            Packages = packages;
         }
     }
 }

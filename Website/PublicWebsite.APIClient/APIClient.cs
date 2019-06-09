@@ -13,7 +13,7 @@ namespace PublicWebsite.APIClient
     {
         public async Task<List<PackageRec>> GetPackagesByAuthorId(int authorId)
         {
-            string requestUrl = RequestUrlBuilder.BuildUrl($"ListPackages?authorId={authorId}");
+            string requestUrl = RequestUrlBuilder.BuildUrl($"GetPackagesForAuthor?authorId={authorId}");
 
             using (HttpClient client = new HttpClient())
             {
@@ -64,7 +64,7 @@ namespace PublicWebsite.APIClient
 
         public async void CreatePackage(string packageName, string packageDescription, int packageAuthorId)
         {
-            string requestUrl = RequestUrlBuilder.BuildUrl($"/CreatePackage?packageName={packageName}&packageDescription={packageDescription}&authorId={packageAuthorId}");
+            string requestUrl = RequestUrlBuilder.BuildUrl($"CreatePackage?packageName={packageName}&packageDescription={packageDescription}&authorId={packageAuthorId}");
 
             using (HttpClient client = new HttpClient(new HttpClientHandler() { AllowAutoRedirect = true }))
             {

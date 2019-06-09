@@ -27,7 +27,7 @@ namespace PackagesService.API
 
             IPackageRepository packageRepository = new DbPackageRepository(databaseOptionsBuilder.Options);
 
-            builder.Services.AddSingleton((pr) => packageRepository);
+            builder.Services.AddTransient((pr) => packageRepository);
         }
     }
 }
