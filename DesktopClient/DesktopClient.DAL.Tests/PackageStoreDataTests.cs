@@ -125,26 +125,26 @@ namespace DesktopClient.DAL.Tests
             Assert.Throws<ArgumentNullException>(() => sut.PackageRevisionFolder(null));
         }
 
-        [Fact]
-        public void PackageRevisionFolder_ReturnsCorrectFolder_WhenSuccessful()
-        {
-            var fileSystem = new MockFileSystem();
-            fileSystem.AddDirectory("TestRootFolder");
-            var rootDirectory = fileSystem.DirectoryInfo.FromDirectoryName("TestRootFolder");
+        //[Fact]
+        //public void PackageRevisionFolder_ReturnsCorrectFolder_WhenSuccessful()
+        //{
+        //    var fileSystem = new MockFileSystem();
+        //    fileSystem.AddDirectory("TestRootFolder");
+        //    var rootDirectory = fileSystem.DirectoryInfo.FromDirectoryName("TestRootFolder");
 
-            var sut = new PackageStoreData(_mockLogger, fileSystem, rootDirectory);
-            using (var zip = new MemoryStream(Properties.Resources.mockZip))
-            {
-                var mockPackageRevision = new PackageRevision(new Package(0, "Some.Package", string.Empty, 0),
-                                                              new SemVersion(new Version("3.4.5")),
-                                                              new ZipArchive(zip));
+        //    var sut = new PackageStoreData(_mockLogger, fileSystem, rootDirectory);
+        //    using (var zip = new MemoryStream(Properties.Resources.mockZip))
+        //    {
+        //        var mockPackageRevision = new PackageRevision(new Package(0, "Some.Package", string.Empty, 0),
+        //                                                      new SemVersion(new Version("3.4.5")),
+        //                                                      new ZipArchive(zip));
 
-                var result = sut.PackageRevisionFolder(mockPackageRevision);
+        //        var result = sut.PackageRevisionFolder(mockPackageRevision);
 
-                Assert.Equal($"{rootDirectory.FullName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}", result);
-            }
+        //        Assert.Equal($"{rootDirectory.FullName}\\{mockPackageRevision.Package.Identifier}\\{mockPackageRevision.VersionNumber}", result);
+        //    }
 
-        }
+        //}
         #endregion
     }
 }

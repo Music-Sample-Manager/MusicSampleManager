@@ -33,29 +33,29 @@ namespace PackagesService.Domain.Tests
             Assert.Throws<ArgumentNullException>(() => new PackageRevision(null, null, null));
         }
 
-        [Fact]
-        public void Ctor_Succeeds_WhenAllParametersAreValid()
-        {
-            var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0), new SemVersion(0), new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
+        //[Fact]
+        //public void Ctor_Succeeds_WhenAllParametersAreValid()
+        //{
+        //    var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0), new SemVersion(0), new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
 
-            Assert.NotNull(sut);
-        }
+        //    Assert.NotNull(sut);
+        //}
         #endregion
 
         #region ContentsUri
-        [Fact]
-        public void ContentsUri_ReturnsCorrectValue_WhenPackageRevisionObjectIsValid()
-        {
-            var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0),
-                                          new SemVersion(1, 2, 3),
-                                          new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
+        //[Fact]
+        //public void ContentsUri_ReturnsCorrectValue_WhenPackageRevisionObjectIsValid()
+        //{
+        //    var sut = new PackageRevision(new Package(0, "Test.Package", string.Empty, 0),
+        //                                  new SemVersion(1, 2, 3),
+        //                                  new ZipArchive(new MemoryStream(Properties.Resources.mockZip)));
 
-            var uri = sut.ContentsUri();
+        //    var uri = sut.ContentsUri();
 
-            Assert.NotNull(sut);
-            Assert.Equal("https://msmpackagedbsa.blob.core.windows.net/all-packages/Test.Package/1.2.3.sf2",
-                         uri.AbsoluteUri);
-        }
+        //    Assert.NotNull(sut);
+        //    Assert.Equal("https://msmpackagedbsa.blob.core.windows.net/all-packages/Test.Package/1.2.3.sf2",
+        //                 uri.AbsoluteUri);
+        //}
 
         //[Fact]
         //public void LogicToRedirectRequestsToBlobStorage_IsImplemented()

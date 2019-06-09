@@ -61,54 +61,54 @@ namespace DesktopClient.Domain.Tests
             Assert.Throws<ArgumentNullException>(() => sut.AddPackageRevision(null));
         }
 
-        [Fact]
-        public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesNotExistInStore()
-        {
-            var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
-            var sut = new LocalPackageStore(mockDAL);
+        //[Fact]
+        //public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesNotExistInStore()
+        //{
+        //    var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
+        //    var sut = new LocalPackageStore(mockDAL);
 
-            Assert.Empty(sut.Entries);
+        //    Assert.Empty(sut.Entries);
 
-            using (var zipStream = new MemoryStream(Resources.mockZip))
-            {
-                var mockPackageRevision = new PackageRevision(new Package(0, "MSMSamplePackages.SampleOne.PackA", string.Empty, 0),
-                                                              new SemVersion(0),
-                                                              new ZipArchive(zipStream));
+        //    using (var zipStream = new MemoryStream(Resources.mockZip))
+        //    {
+        //        var mockPackageRevision = new PackageRevision(new Package(0, "MSMSamplePackages.SampleOne.PackA", string.Empty, 0),
+        //                                                      new SemVersion(0),
+        //                                                      new ZipArchive(zipStream));
 
-                sut.AddPackageRevision(mockPackageRevision);
+        //        sut.AddPackageRevision(mockPackageRevision);
 
-                Assert.Single(sut.Entries);
-                Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
-            }
-        }
+        //        Assert.Single(sut.Entries);
+        //        Assert.Equal("MSMSamplePackages.SampleOne.PackA", sut.Entries[0].Package.Identifier);
+        //    }
+        //}
 
-        [Fact]
-        public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesExistInStore()
-        {
-            var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
-            var mockPackage = new Package(0, "SamplePackage.Something.Else", string.Empty, 0);
+        //[Fact]
+        //public void AddPackage_AddsPackageAndRevisionToEntries_WhenPackageDoesExistInStore()
+        //{
+        //    var mockDAL = new MockPackageStoreData(_mockLogger, MockProjectFolder);
+        //    var mockPackage = new Package(0, "SamplePackage.Something.Else", string.Empty, 0);
 
-            using (var zipStream = new MemoryStream(Resources.mockZip))
-            {
+        //    using (var zipStream = new MemoryStream(Resources.mockZip))
+        //    {
 
-                var mockPackageRev1 = new PackageRevision(mockPackage, new SemVersion(0, 1), new ZipArchive(zipStream));
-                var mockPackageRev2 = new PackageRevision(mockPackage, new SemVersion(0, 2), new ZipArchive(zipStream));
+        //        var mockPackageRev1 = new PackageRevision(mockPackage, new SemVersion(0, 1), new ZipArchive(zipStream));
+        //        var mockPackageRev2 = new PackageRevision(mockPackage, new SemVersion(0, 2), new ZipArchive(zipStream));
 
-                var sut = new LocalPackageStore(mockDAL);
+        //        var sut = new LocalPackageStore(mockDAL);
 
-                Assert.Empty(sut.Entries);
+        //        Assert.Empty(sut.Entries);
 
-                sut.AddPackageRevision(mockPackageRev1);
+        //        sut.AddPackageRevision(mockPackageRev1);
 
-                Assert.Single(sut.Entries);
-                Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
+        //        Assert.Single(sut.Entries);
+        //        Assert.Equal(mockPackage.Identifier, sut.Entries[0].Package.Identifier);
 
-                sut.AddPackageRevision(mockPackageRev2);
+        //        sut.AddPackageRevision(mockPackageRev2);
 
-                Assert.Single(sut.Entries);
-                Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());
-            }
-        }
+        //        Assert.Single(sut.Entries);
+        //        Assert.Equal(2, sut.Entries[0].PackageRevisions.Count());
+        //    }
+        //}
 
         //[Fact]
         //TODO These are DAL-layer tests. They need to be moved to a DAL-testing project.
